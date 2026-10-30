@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KINETIC SILENCE — Monographie Numérique Interactive</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#0B0B0C',
+            charcoal: '#141417',
+            elevated: '#1E1E24',
+            parchment: '#F4F1EA',
+            chrome: '#9E9EA9',
+            terracotta: '#C85A32',
+            trophy: '#D4AF37',
+          },
+          fontFamily: {
+            serif: ['"Instrument Serif"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background-color: #0B0B0C;
+      color: #F4F1EA;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .spring-card {
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.3s ease,
+                  background-color 0.3s ease,
+                  box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .spring-card:hover {
+      transform: translateY(-4px);
+    }
+    .spring-row {
+      transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.25s ease,
+                  background-color 0.25s ease;
+    }
+    .spring-row:hover {
+      transform: translateX(4px);
+    }
+    .vinyl-sleeve {
+      transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .vinyl-sleeve:hover {
+      transform: perspective(600px) rotateY(-6deg) rotateZ(2deg) scale(1.03);
+    }
+    .vinyl-sleeve-playing {
+      transform: perspective(600px) rotateY(-10deg) rotateZ(-4deg) scale(1.05);
+    }
+    .vinyl-disc {
+      transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .vinyl-sleeve:hover .vinyl-disc-idle {
+      transform: translateX(10px) rotate(25deg);
+    }
+    @keyframes spinRecord {
+      from { transform: translateX(16px) rotate(0deg); }
+      to { transform: translateX(16px) rotate(360deg); }
+    }
+    .disc-spinning {
+      animation: spinRecord 2.6s linear infinite;
+    }
+    @keyframes slideInDrawer {
+      from { transform: translateX(100%); opacity: 0.6; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    .drawer-slide-in {
+      animation: slideInDrawer 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .manga-ink-img {
+      filter: grayscale(100%) contrast(1.18);
+      transition: filter 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .manga-card:hover .manga-ink-img {
+      filter: grayscale(35%) contrast(1.08);
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#0B0B0C] text-[#F4F1EA] selection:bg-[#C85A32] selection:text-[#F4F1EA] antialiased overflow-x-hidden">
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useMemo, useEffect, useRef, useCallback } = React;
+
+    // ========================================================================
+    // 1. GÉNÉRATEURS SVG DE SECOURS (POUR LE MODE HORS-LIGNE / ERREUR RÉSEAU)
+    // ========================================================================
+    function createAlbumCoverSvg(artist, title, accent, secondary, motif) {
+      const motifGraphic =
+        motif === "HARP"
+          ? `<g stroke="${accent}" stroke-width="1.5" opacity="0.75">
+              <path d="M90 40 C 90 180, 210 180, 210 260" fill="none" stroke-width="3"/>
+              <line x1="110" y1="65" x2="110" y2="240"/>
+              <line x1="130" y1="80" x2="130" y2="240"/>
+              <line x1="150" y1="95" x2="150" y2="240"/>
+              <line x1="170" y1="115" x2="170" y2="240"/>
+              <line x1="190" y1="140" x2="190" y2="240"/>
+            </g>`
+          : motif === "TRAP808"
+          ? `<g stroke="${accent}" fill="none">
+              <circle cx="150" cy="150" r="88" stroke-width="2" opacity="0.35"/>
+              <circle cx="150" cy="150" r="62" stroke-width="4" opacity="0.65"/>
+              <circle cx="150" cy="150" r="28" fill="${accent}" opacity="0.25"/>
+              <polygon points="150,45 245,215 55,215" stroke="${secondary}" stroke-width="1.5" opacity="0.5"/>
+            </g>`
+          : motif === "RUMBA"
+          ? `<g stroke="${accent}" fill="none">
+              <circle cx="150" cy="155" r="44" stroke-width="3" opacity="0.8"/>
+              <circle cx="150" cy="155" r="54" stroke-width="1" opacity="0.4"/>
+              <line x1="150" y1="20" x2="150" y2="280" stroke-width="1.5" opacity="0.6"/>
+            </g>`
+          : `<g stroke="${accent}" fill="none" stroke-width="2">
+              <rect x="55" y="55" width="190" height="190" opacity="0.3"/>
+              <path d="M75 195 L95 105 L150 155 L205 105 L225 195 Z" fill="${accent}" fill-opacity="0.18"/>
+            </g>`;
+
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+        <rect width="300" height="300" fill="#0B0B0C"/>
+        ${motifGraphic}
+        <rect x="14" y="14" width="272" height="272" fill="none" stroke="#F4F1EA" stroke-opacity="0.14" stroke-width="1"/>
+        <text x="26" y="42" fill="#9E9EA9" font-family="monospace" font-size="10" letter-spacing="2">${artist.toUpperCase()}</text>
+        <text x="26" y="268" fill="#F4F1EA" font-family="Georgia, serif" font-style="italic" font-size="17">${title.slice(0, 26)}</text>
+      </svg>`;
+      return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+    }
+
+    function createMangaInkSvg(kanji, title, author) {
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" width="400" height="320">
+        <rect width="400" height="320" fill="#0B0B0C"/>
+        <path d="M30 260 Q 180 70, 370 110" fill="none" stroke="#F4F1EA" stroke-opacity="0.25" stroke-width="10" stroke-linecap="round"/>
+        <text x="285" y="195" fill="#F4F1EA" fill-opacity="0.1" font-family="serif" font-size="140" font-weight="bold">${kanji}</text>
+        <rect x="16" y="16" width="368" height="288" fill="none" stroke="#F4F1EA" stroke-opacity="0.2" stroke-width="1.5"/>
+        <text x="30" y="46" fill="#D4AF37" font-family="monospace" font-size="11" letter-spacing="2">${author.toUpperCase()}</text>
+        <text x="30" y="282" fill="#F4F1EA" font-family="Georgia, serif" font-size="22" font-style="italic">${title}</text>
+      </svg>`;
+      return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+    }
+
+    // ========================================================================
+    // 2. SYNTHÉTISEUR AUDIO WEB (BOUCLES SONORES INTERACTIVES)
+    // ========================================================================
+    class StudioLoopSynthesizer {
+      constructor() {
+        this.ctx = null;
+        this.timerId = null;
+        this.isPlaying = false;
+        this.step = 0;
+      }
+      start(preset) {
+        this.stop();
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        this.ctx = new AudioCtx();
+        this.isPlaying = true;
+        this.step = 0;
+        const tempoMs =
+          preset === "SUB_808_DARK" || preset === "FAST_HIHAT_TRAP" || preset === "ICY_SYNTH_TRAP"
+            ? 185
+            : preset === "RUMBA_GUITAR" || preset === "AFRO_MELODIC"
+            ? 210
+            : preset === "THRILLER_FUNK"
+            ? 200
+            : 250;
+        const tick = () => {
+          if (!this.isPlaying || !this.ctx) return;
+          this.triggerStep(this.ctx, preset, this.step);
+          this.step = (this.step + 1) % 16;
+        };
+        tick();
+        this.timerId = window.setInterval(tick, tempoMs);
+      }
+      triggerStep(ctx, preset, step) {
+        const now = ctx.currentTime;
+        if (preset === "HARP_STRINGS") {
+          const harpNotes = [293.66, 349.23, 440.0, 523.25, 587.33, 440.0, 349.23, 293.66];
+          this.playPluck(ctx, harpNotes[step % harpNotes.length], now, 0.55, "triangle", 0.14);
+          if (step % 8 === 0) {
+            this.playPad(ctx, 146.83, now, 1.7, 0.07);
+          }
+        } else if (
+          preset === "SUB_808_DARK" ||
+          preset === "ICY_SYNTH_TRAP" ||
+          preset === "FAST_HIHAT_TRAP"
+        ) {
+          if (step === 0 || step === 3 || step === 6 || step === 10 || step === 12) {
+            this.play808(ctx, step === 10 ? 58.27 : 51.91, now);
+          }
+          if (step % 2 === 0) {
+            const bellNotes =
+              preset === "ICY_SYNTH_TRAP"
+                ? [523.25, 622.25, 587.33, 466.16]
+                : [311.13, 293.66, 261.63, 246.94];
+            this.playPluck(ctx, bellNotes[(step / 2) % bellNotes.length], now, 0.25, "sine", 0.07);
+          }
+        } else if (preset === "RUMBA_GUITAR" || preset === "AFRO_MELODIC") {
+          const rumbaNotes = [329.63, 392.0, 493.88, 587.33, 659.25, 493.88, 392.0, 440.0];
+          this.playPluck(ctx, rumbaNotes[step % rumbaNotes.length], now, 0.42, "triangle", 0.15);
+          if (step % 4 === 0) {
+            this.playPluck(ctx, 164.81, now, 0.48, "sine", 0.11);
+          }
+        } else if (preset === "THRILLER_FUNK" || preset === "WESTCOAST_PULSE") {
+          const bassLine = [138.59, 138.59, 164.81, 185.0, 207.65, 185.0, 164.81, 146.83];
+          this.playPluck(ctx, bassLine[step % bassLine.length], now, 0.28, "sawtooth", 0.1);
+        } else if (
+          preset === "NOCTURNE_JAZZ" ||
+          preset === "MIDNIGHT_VAPOR" ||
+          preset === "TWILIGHT_PAD"
+        ) {
+          const jazzNotes = [261.63, 311.13, 392.0, 466.16, 523.25, 466.16, 392.0, 311.13];
+          this.playPluck(ctx, jazzNotes[step % jazzNotes.length], now, 0.55, "sine", 0.12);
+          if (step % 8 === 0) {
+            this.playPad(ctx, 130.81, now, 1.9, 0.08);
+          }
+        } else {
+          const scale = [261.63, 311.13, 392.0, 466.16, 523.25, 392.0, 311.13, 293.66];
+          this.playPluck(ctx, scale[step % scale.length], now, 0.48, "triangle", 0.12);
+        }
+      }
+      playPluck(ctx, freq, time, duration, type, gainPeak) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, time);
+        gain.gain.setValueAtTime(0.001, time);
+        gain.gain.exponentialRampToValueAtTime(gainPeak, time + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0008, time + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(time);
+        osc.stop(time + duration + 0.02);
+      }
+      playPad(ctx, freq, time, duration, gainPeak) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, time);
+        gain.gain.setValueAtTime(0.001, time);
+        gain.gain.linearRampToValueAtTime(gainPeak, time + 0.28);
+        gain.gain.exponentialRampToValueAtTime(0.0008, time + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(time);
+        osc.stop(time + duration + 0.05);
+      }
+      play808(ctx, freq, time) {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq * 2.1, time);
+        osc.frequency.exponentialRampToValueAtTime(freq, time + 0.07);
+        gain.gain.setValueAtTime(0.001, time);
+        gain.gain.linearRampToValueAtTime(0.28, time + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + 0.48);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(time);
+        osc.stop(time + 0.5);
+      }
+      stop() {
+        this.isPlaying = false;
+        if (this.timerId !== null) {
+          window.clearInterval(this.timerId);
+          this.timerId = null;
+        }
+        if (this.ctx) {
+          this.ctx.close().catch(() => {});
+          this.ctx = null;
+        }
+      }
+    }
+
+    // ========================================================================
+    // 3. COLLECTIONS ÉDITORIALES STRICTES (100% EN FRANÇAIS, SANS CLASSEMENT)
+    // ========================================================================
+    const MUSIC_CATEGORIES = [
+      {
+        key: "LYRICISM",
+        shortLabel: "Plume & Lucidité",
+        fullTitle: "Plume Chirurgicale & Profondeur Confessionnelle",
+      },
+      {
+        key: "TRAP",
+        shortLabel: "Trap & Impact",
+        fullTitle: "Impact Brut & Propulsion Sans Filtre",
+      },
+      {
+        key: "ROOTS",
+        shortLabel: "Racines & Grâce",
+        fullTitle: "Racines, Élégance & Maîtrise Intemporelle",
+      },
+      {
+        key: "SPLEEN",
+        shortLabel: "Spleen & Mélodie",
+        fullTitle: "Spleen Moderne & Évolution Mélodique",
+      },
+    ];
+
+    // PILIER 1 : LA SONOTHÈQUE (Disques essentiels sans hiérarchie ni classement)
+    const SOUND_SPECTRUM_DATA = [
+      {
+        id: "dave-harp",
+        artist: "Dave",
+        title: "The Boy Who Played the Harp",
+        category: "LYRICISM",
+        origin: "Londres-Sud, Royaume-Uni",
+        rpm: "Vinyle 33 ⅓ Tours",
+        accentColor: "#C85A32",
+        coverImage: "https://static.fnac-static.com/multimedia/Images/FR/NR/ed/d4/28/19453165/1541-1/tsp20251003084032/The-Boy-Who-Played-The-Harp-Vinyle-Jaune.jpg",
+        fallbackCoverSvg: createAlbumCoverSvg("Dave", "The Boy Who Played the Harp", "#C85A32", "#D4AF37", "HARP"),
+        audioDescription: "Cordes ambiantes & boucle de harpe de concert en ré mineur",
+        synthPreset: "HARP_STRINGS",
+        editorial: "Le sommet de l'orfèvrerie du rap britannique. Des schémas de rimes d'une précision chirurgicale qui s'ouvrent sur une vulnérabilité lucide, prouvant que la sincérité brute frappe plus fort que n'importe quelle posture."
+      },
+      {
+        id: "dosseh-perestroika",
+        artist: "Dosseh",
+        title: "Perestroïka & Trop tôt pour mourir",
+        category: "LYRICISM",
+        origin: "Orléans, France",
+        rpm: "Double Vinyle",
+        accentColor: "#9E9EA9",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8v4yVZEe0WY_WR7QrPX1CCbKFQ4q7RKxvVryV30Si0w&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Dosseh", "Perestroïka & Trop tôt pour mourir", "#9E9EA9", "#C85A32", "CROWN"),
+        audioDescription: "Piano mineur bitume & boucle de caisse claire lourde",
+        synthPreset: "ASPHALT_BOOM",
+        editorial: "Une autorité à la voix rocailleuse, un réalisme de bitume et des punchlines existentielles taillées au scalpel."
+      },
+      {
+        id: "13block-triples",
+        artist: "13 Block",
+        title: "Triple S",
+        category: "TRAP",
+        origin: "Sevran, France",
+        rpm: "Vinyle 33 ⅓ Tours",
+        accentColor: "#C85A32",
+        coverImage: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80",
+        fallbackCoverSvg: createAlbumCoverSvg("13 Block", "Triple S", "#C85A32", "#9E9EA9", "TRAP808"),
+        audioDescription: "Arpège synthétique glacial & architecture sub-basse",
+        synthPreset: "ICY_SYNTH_TRAP",
+        editorial: "L'alchimie collective à son apogée. Une architecture trap hypnotique, glaciale et avant-gardiste façonnée par Ikaz Boi."
+      },
+      {
+        id: "kaaris-ornoir2",
+        artist: "Kaaris",
+        title: "Or Noir Part 2",
+        category: "TRAP",
+        origin: "Sevran, France",
+        rpm: "Vinyle 45 Tours",
+        accentColor: "#D4AF37",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGcxBY_tt8b-E96DkNGC5INsqLfd3u1mQxzAYVske-Wg&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Kaaris", "Or Noir Part 2", "#D4AF37", "#C85A32", "TRAP808"),
+        audioDescription: "Boucle 808 sub-basse sismique & cuivres de Sevran",
+        synthPreset: "SUB_808_DARK",
+        editorial: "Le pilier fondateur de la trap sombre francophone. Des basses sismiques, une imagerie taillée dans le silex et une déflagration sonore implacable."
+      },
+      {
+        id: "dehmo-ethologie",
+        artist: "Dehmo",
+        title: "Ethologie",
+        category: "TRAP",
+        origin: "Paris, France",
+        rpm: "Vinyle 33 ⅓ Tours",
+        accentColor: "#787885",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHEqRcEwiJ3IzeY0MlsU6VcXH7iCKqucXdO5NNsX9Fjw&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Dehmo", "Ethologie", "#9E9EA9", "#C85A32", "CROWN"),
+        audioDescription: "Nappe synthétique crépusculaire & pulsation sub profonde",
+        synthPreset: "TWILIGHT_PAD",
+        editorial: "Ambiance crépusculaire, débit clinique et étude d'observation froide de la nature humaine."
+      },
+      {
+        id: "leto-trapstar2",
+        artist: "Leto",
+        title: "Trapstar 2",
+        category: "TRAP",
+        origin: "Paris 17e, France",
+        rpm: "Vinyle 33 ⅓ Tours",
+        accentColor: "#9E9EA9",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-GIWrntdYGax9GZVN8oJ2sn2oQkj3UscQyAAssB43hw&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Leto", "Trapstar 2", "#9E9EA9", "#D4AF37", "TRAP808"),
+        audioDescription: "Roulements de charlestons parisiens & basse élastique",
+        synthPreset: "FAST_HIHAT_TRAP",
+        editorial: "L'urgence parisienne à l'état pur. Des cadences élastiques, des gimmicks inoubliables et une adrénaline de rue sans filtre."
+      },
+      {
+        id: "fally-droitchemin",
+        artist: "Fally Ipupa",
+        title: "Droit Chemin",
+        category: "ROOTS",
+        origin: "Kinshasa, RDC",
+        rpm: "Pressage Or",
+        accentColor: "#C85A32",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEQqYhRmjQMFFWkkgXSZqpfzugzvYOFzZDDgEDPvOgpw&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Fally Ipupa", "Droit Chemin", "#C85A32", "#D4AF37", "RUMBA"),
+        audioDescription: "Phrase de guitare rumba congolaise acoustique cristalline",
+        synthPreset: "RUMBA_GUITAR",
+        editorial: "L'ascension solitaire de la royauté congolaise. Des guitares rumba acoustiques virtuoses, une chaleur vocale souveraine et une fierté ancestrale."
+      },
+      {
+        id: "mj-thriller",
+        artist: "Michael Jackson",
+        title: "Thriller",
+        category: "ROOTS",
+        origin: "Los Angeles, États-Unis",
+        rpm: "Gravure Originale",
+        accentColor: "#D4AF37",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT48dpQFrluAdzYIUBsXnRAplJTlEL3Qgl7eHd2rjC1MA&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Michael Jackson", "Thriller", "#D4AF37", "#C85A32", "CROWN"),
+        audioDescription: "Groove synth-basse analogique de studio & pulsation rythmique",
+        synthPreset: "THRILLER_FUNK",
+        editorial: "L'étalon-or intouchable. La production immaculée de Quincy Jones, une discipline de studio obsessionnelle et un groove éternel."
+      },
+      {
+        id: "kendrick-gnx",
+        artist: "Kendrick Lamar",
+        title: "GNX",
+        category: "LYRICISM",
+        origin: "Compton, États-Unis",
+        rpm: "Vinyle 33 ⅓ Tours",
+        accentColor: "#D4AF37",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcYLoXvyAtiE5c-6htRmSJqqUYenTXblbeKtKi_a15ig&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Kendrick Lamar", "GNX", "#D4AF37", "#C85A32", "CROWN"),
+        audioDescription: "Pulsation grave côte Ouest & cadence rythmique tendue",
+        synthPreset: "WESTCOAST_PULSE",
+        editorial: "Une leçon magistrale de rigueur conceptuelle, de densité culturelle et de précision rythmique sans le moindre artifice."
+      },
+      {
+        id: "luidji-saison00",
+        artist: "Luidji",
+        title: "Saison 00",
+        category: "SPLEEN",
+        origin: "Paris, France",
+        rpm: "Vinyle 33 ⅓ Tours",
+        accentColor: "#C85A32",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4Wf2qqtfSNBETgcOXo7DJVvSRUbPYrUYXc6paKhTo5A&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Luidji", "Saison 00", "#C85A32", "#9E9EA9", "HARP"),
+        audioDescription: "Accords Rhodes jazz nocturnes & progression néo-soul",
+        synthPreset: "NOCTURNE_JAZZ",
+        editorial: "Un récit nocturne parisien tissant jazz, soul et examen sans fard de ses propres contradictions intimes."
+      },
+      {
+        id: "prototype-farewell",
+        artist: "Prototype",
+        title: "Farewell",
+        category: "SPLEEN",
+        origin: "France",
+        rpm: "Vinyle 33 ⅓ Tours",
+        accentColor: "#9E9EA9",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNSyTZlbMdu6RXmPPNgkjmZ-SA4Er1rNwj1I3OpGjsng&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Prototype", "Farewell", "#9E9EA9", "#C85A32", "CROWN"),
+        audioDescription: "Nappe synthwave vaporeuse d'autoroute à minuit",
+        synthPreset: "MIDNIGHT_VAPOR",
+        editorial: "Une mélancolie vaporeuse et futuriste taillée pour les traversées solitaires sur l'autoroute à minuit."
+      },
+      {
+        id: "theodora-bbls",
+        artist: "Théodora",
+        title: "Bad Boy Lovestory",
+        category: "SPLEEN",
+        origin: "France // Diaspora",
+        rpm: "Vinyle 45 Tours",
+        accentColor: "#C85A32",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmz61B_clLNcAQjyUYRTDE5zl-h_gohDMTU8zwcbwTtA&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Théodora", "Bad Boy Lovestory", "#C85A32", "#D4AF37", "HARP"),
+        audioDescription: "Synthé mélodique infusé d'hyperpop & pulsation deux-temps",
+        synthPreset: "HYPER_LOVESTORY",
+        editorial: "Une énergie hybride addictive mêlant tranchant hyperpop, rap mélodique et vulnérabilité sentimentale à vif."
+      },
+      {
+        id: "tiakola-wpointm",
+        artist: "Tiakola",
+        title: "WpointM",
+        category: "SPLEEN",
+        origin: "La Courneuve // ADN Kinshasa",
+        rpm: "Vinyle 33 ⅓ Tours",
+        accentColor: "#D4AF37",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCtIZFhx1UfgleL0QK0e4-LK9RO3afL3AzU4lHWGi2Yw&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Tiakola", "WpointM", "#D4AF37", "#C85A32", "RUMBA"),
+        audioDescription: "Accords afro-urbains mélodiques & rebond percussif chaleureux",
+        synthPreset: "AFRO_MELODIC",
+        editorial: "L'affirmation soliste de William Mundala. Un pont souverain entre l'ADN mélodique de Kinshasa et les paysages afro-urbains nouvelle génération."
+      },
+      {
+        id: "tiakola-melo",
+        artist: "Tiakola",
+        title: "Mélo",
+        category: "SPLEEN",
+        origin: "La Courneuve // Héritage 4Keus",
+        rpm: "Vinyle 33 ⅓ Tours",
+        accentColor: "#C85A32",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXm3YLts4kZ2eX9B-Mp8gzJ9omxY2OcuEe1K0IUkO9iw&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Tiakola", "Mélo", "#C85A32", "#D4AF37", "RUMBA"),
+        audioDescription: "Phrasé rumba congolaise solaire & rebond moderne",
+        synthPreset: "RUMBA_GUITAR",
+        editorial: "Le premier album solo certifié diamant : une énergie solaire et une science de la mélodie qui ont donné le la au mouvement afro-français."
+      }
+    ];
+
+    // PILIER 2 : LE PANTHÉON MANGA (Oeuvres maîtresses avec visuels Pinterest)
+    const MANGA_CRUCIBLE_DATA = [
+      {
+        id: "dragon-ball",
+        title: "Dragon Ball",
+        author: "Akira Toriyama",
+        category: "BENCHMARK",
+        categoryLabel: "L'Étalon Absolu",
+        featuredOnCanvas: true,
+        kanjiMotif: "亀 // GENÈSE",
+        artworkUrl: "https://i.pinimg.com/736x/1d/7d/05/1d7d05d01cd445bc2773df2d711ed549.jpg",
+        fallbackArtworkSvg: createMangaInkSvg("亀", "Dragon Ball", "Akira Toriyama"),
+        editorial: "Le bloc de genèse. Une brillance cinétique et un dépassement de soi dépourvus de toute malveillance : Goku ne combat ni pour dominer ni pour détruire, mais pour franchir ses propres limites et partager un banquet avec ses rivaux d'hier."
+      },
+      {
+        id: "vagabond",
+        title: "Vagabond",
+        author: "Takehiko Inoue",
+        category: "PHILOSOPHY",
+        categoryLabel: "Épopées Philosophiques (La Force par la Paix)",
+        featuredOnCanvas: true,
+        kanjiMotif: "空 // ENCRE SUMI-E",
+        artworkUrl: "https://i.pinimg.com/1200x/3f/11/c3/3f11c3250846232dced70d55373c5a3e.jpg",
+        fallbackArtworkSvg: createMangaInkSvg("空", "Vagabond", "Takehiko Inoue"),
+        editorial: "La maîtrise absolue du lavis sumi-e. La quête spirituelle de Musashi démasque le mythe de l'« invincible » comme une illusion creuse, révélant que la maîtrise suprême conduit à déposer le sabre pour cultiver la terre."
+      },
+      {
+        id: "vinland-saga",
+        title: "Vinland Saga",
+        author: "Makoto Yukimura",
+        category: "PHILOSOPHY",
+        categoryLabel: "Épopées Philosophiques (La Force par la Paix)",
+        featuredOnCanvas: true,
+        kanjiMotif: "和 // VRAI GUERRIER",
+        artworkUrl: "https://i.pinimg.com/736x/33/02/2b/33022b3c01a95997b884ea582c6a8caf.jpg",
+        fallbackArtworkSvg: createMangaInkSvg("和", "Vinland Saga", "Makoto Yukimura"),
+        editorial: "L'arc de rédemption ultime. Traverser des champs de bataille gorgés de sang pour atteindre la plus haute vérité martiale : le véritable courage réside dans le refus de la haine et de la vengeance."
+      },
+      {
+        id: "kingdom",
+        title: "Kingdom",
+        author: "Yasuhisa Hara",
+        category: "PHILOSOPHY",
+        categoryLabel: "Épopées Philosophiques (La Force par la Paix)",
+        featuredOnCanvas: false,
+        kanjiMotif: "将 // UNIFICATION",
+        artworkUrl: "https://i.pinimg.com/1200x/38/03/91/3803911d30ba4c60c6e9bd8695dcd0a7.jpg",
+        fallbackArtworkSvg: createMangaInkSvg("将", "Kingdom", "Yasuhisa Hara"),
+        editorial: "Une fresque stratégique monumentale et un commandement de champ de bataille ancrés dans la fraternité, le sacrifice mutuel et la vision d'une paix unifiée."
+      },
+      {
+        id: "gintama",
+        title: "Gintama",
+        author: "Hideaki Sorachi",
+        category: "MASTERCLASS",
+        categoryLabel: "Les Chefs-d'Œuvre de Haute Volée",
+        featuredOnCanvas: false,
+        kanjiMotif: "銀 // SABRE DE BOIS",
+        artworkUrl: "https://i.pinimg.com/736x/87/44/2b/87442b059d1f706c3a0585e62bf3ae5a.jpg",
+        fallbackArtworkSvg: createMangaInkSvg("銀", "Gintama", "Hideaki Sorachi"),
+        editorial: "Un miracle narratif capable de basculer de la satire absurde au deuil déchirant en trois cases. Le portrait poignant de vétérans protégeant leur famille choisie avec un simple sabre de bois émoussé."
+      },
+      {
+        id: "hunter-x-hunter",
+        title: "Hunter x Hunter",
+        author: "Yoshihiro Togashi",
+        category: "MASTERCLASS",
+        categoryLabel: "Les Chefs-d'Œuvre de Haute Volée",
+        featuredOnCanvas: false,
+        kanjiMotif: "念 // ÉCHECS DU NEN",
+        artworkUrl: "https://i.pinimg.com/736x/cf/4c/16/cf4c16da47740bc95ce133e3f2d93663.jpg",
+        fallbackArtworkSvg: createMangaInkSvg("念", "Hunter x Hunter", "Yoshihiro Togashi"),
+        editorial: "La tension stratégique à son paroxysme. Le Nen demeure le système de pouvoir le plus rigoureux de la fiction, élevant chaque affrontement au rang de partie d'échecs psychologique sans morale manichéenne."
+      },
+      {
+        id: "fmab",
+        title: "Fullmetal Alchemist",
+        author: "Hiromu Arakawa",
+        category: "MASTERCLASS",
+        categoryLabel: "Les Chefs-d'Œuvre de Haute Volée",
+        featuredOnCanvas: false,
+        kanjiMotif: "錬 // ÉQUIVALENCE",
+        artworkUrl: "https://i.pinimg.com/736x/52/6c/1c/526c1cd2f2bb39cd2acca5b9a1fa4926.jpg",
+        fallbackArtworkSvg: createMangaInkSvg("錬", "Fullmetal Alchemist", "Hiromu Arakawa"),
+        editorial: "La perfection structurelle. Une logique interne hermétique, aucune case superflue et une critique lucide du militarisme comme de l'orgueil humain."
+      },
+      {
+        id: "jojo",
+        title: "JoJo's Bizarre Adventure",
+        author: "Hirohiko Araki",
+        category: "STYLE",
+        categoryLabel: "Style, Stratégie & Duels",
+        featuredOnCanvas: false,
+        kanjiMotif: "覚 // POSTURE STAND",
+        artworkUrl: "https://i.pinimg.com/originals/f1/3d/6c/f13d6ce6c9ca2b4380d3586959a0d34e.png",
+        fallbackArtworkSvg: createMangaInkSvg("覚", "JoJo's Bizarre Adventure", "Hirohiko Araki"),
+        editorial: "Des postures haute couture, une audace plastique permanente et des affrontements de Stands d'une inventivité vertigineuse."
+      },
+      {
+        id: "reborn",
+        title: "Katekyo Hitman Reborn!",
+        author: "Akira Amano",
+        category: "STYLE",
+        categoryLabel: "Style, Stratégie & Duels",
+        featuredOnCanvas: false,
+        kanjiMotif: "炎 // VOLONTÉ VONGOLA",
+        artworkUrl: "https://i.pinimg.com/1200x/6b/67/54/6b67549d60a65934baded68bdc0dcf2e.jpg",
+        fallbackArtworkSvg: createMangaInkSvg("炎", "Katekyo Hitman Reborn!", "Akira Amano"),
+        editorial: "Une montée en puissance singulière, la flamme de la dernière volonté et une loyauté collective indéfectible."
+      },
+      {
+        id: "yugioh",
+        title: "Yu-Gi-Oh!",
+        author: "Kazuki Takahashi",
+        category: "STYLE",
+        categoryLabel: "Style, Stratégie & Duels",
+        featuredOnCanvas: false,
+        kanjiMotif: "絆 // DUEL DES OMBRES",
+        artworkUrl: "https://i.pinimg.com/736x/c3/6a/d1/c36ad177e03cb693332753a3ef5d3c96.jpg",
+        fallbackArtworkSvg: createMangaInkSvg("絆", "Yu-Gi-Oh!", "Kazuki Takahashi"),
+        editorial: "Mythologie occulte égyptienne, duels psychologiques des ombres et triomphe de la fraternité jurée."
+      }
+    ];
+
+    // PILIER 3 : LE TERRAIN (Archive Football Âge d'Or 1990–2010, sans numérotation)
+    const FOOTBALL_LEGACY_DATA = [
+      {
+        id: "dual-allegiance",
+        tag: "DOUBLE ALLÉGEANCE",
+        title: "Paris Saint-Germain & Manchester United",
+        subtitle: "Parc des Princes × Old Trafford (Ère Sir Alex Ferguson)",
+        era: "PILIERS CULTURELS & TACTIQUES",
+        tacticalRole: "IDENTITÉ INSTITUTIONNELLE",
+        pitchZone: "LES CATHÉDRALES",
+        editorial: "Paris Saint-Germain et Manchester United sous la houlette de Sir Alex Ferguson : la ferveur incandescente du Parc alliée à la rigueur impériale du Théâtre des Rêves."
+      },
+      {
+        id: "cr7-benchmark",
+        tag: "L'ÉTALON DE LA VOLONTÉ",
+        title: "Cristiano Ronaldo (CR7)",
+        subtitle: "Sporting CP • Manchester United • Real Madrid • Portugal",
+        era: "DISCIPLINE ABSOLUE",
+        tacticalRole: "MAÎTRISE DE SOI IMPLACABLE",
+        pitchZone: "AILE GAUCHE & FINITION",
+        editorial: "Cristiano Ronaldo (CR7) — Une éthique de travail incorruptible, une discipline quotidienne obsessionnelle et la quête incessante du dépassement de soi."
+      },
+      {
+        id: "r9-rooney",
+        tag: "LA GRÂCE & LA HARGNE",
+        title: "Ronaldo Nazário (R9) & Wayne Rooney",
+        subtitle: "La Joie d'O Fenômeno × Le Moteur Total de Rooney",
+        era: "GÉNÉRATION 1990–2010",
+        tacticalRole: "GÉNIE EXPLOSIF & SACRIFICE",
+        pitchZone: "FRONT OFFENSIF",
+        editorial: "Ronaldo Nazário (R9) pour la pure joie brésilienne et l'accélération foudroyante, associé au moteur féroce de Wayne Rooney et à son sens total du sacrifice collectif."
+      },
+      {
+        id: "silent-guardians",
+        tag: "LES GARDIENS SILENCIEUX",
+        title: "Sentinelles défensives & Milieux récupérateurs",
+        subtitle: "Génération 1990–2010 (Écoles Française & Brésilienne)",
+        era: "ÂGE D'OR 1990–2010",
+        tacticalRole: "SENTINELLES & CHARNIÈRES",
+        pitchZone: "DOUBLE PIVOT & DÉFENSE CENTRALE",
+        editorial: "Un hommage aux grandes sentinelles défensives et aux généraux de l'entrejeu du football français et brésilien. Une autorité naturelle et un engagement physique total sans la moindre malveillance gratuite."
+      }
+    ];
+
+    // ========================================================================
+    // 4. COMPOSANT PRINCIPAL DE L'APPLICATION
+    // ========================================================================
+    function App() {
+      const [activeFilter, setActiveFilter] = useState("ALL");
+      const [activeMusicCat, setActiveMusicCat] = useState("LYRICISM");
+      const [selectedAlbum, setSelectedAlbum] = useState(SOUND_SPECTRUM_DATA[0]);
+      const [playingAlbumId, setPlayingAlbumId] = useState(null);
+      const [hoveredTileId, setHoveredTileId] = useState(null);
+      const [drawerMode, setDrawerMode] = useState(null);
+      const synthRef = useRef(null);
+
+      useEffect(() => {
+        synthRef.current = new StudioLoopSynthesizer();
+        return () => synthRef.current?.stop();
+      }, []);
+
+      const togglePlayAlbum = useCallback((album) => {
+        if (playingAlbumId === album.id) {
+          synthRef.current?.stop();
+          setPlayingAlbumId(null);
+        } else {
+          setSelectedAlbum(album);
+          synthRef.current?.start(album.synthPreset);
+          setPlayingAlbumId(album.id);
+        }
+      }, [playingAlbumId]);
+
+      const filteredAlbums = useMemo(
+        () => SOUND_SPECTRUM_DATA.filter((item) => item.category === activeMusicCat),
+        [activeMusicCat]
+      );
+
+      const handleMusicCategorySwitch = (cat) => {
+        setActiveMusicCat(cat);
+        const first = SOUND_SPECTRUM_DATA.find((a) => a.category === cat);
+        if (first) setSelectedAlbum(first);
+      };
+
+      const featuredManga = useMemo(
+        () => MANGA_CRUCIBLE_DATA.filter((m) => m.featuredOnCanvas),
+        []
+      );
+      const archiveManga = useMemo(
+        () => MANGA_CRUCIBLE_DATA.filter((m) => !m.featuredOnCanvas),
+        []
+      );
+
+      const getTileFocusClass = (tileId) => {
+        if (!hoveredTileId || hoveredTileId === tileId) return "opacity-100";
+        return "opacity-75";
+      };
+
+      const isSelectedPlaying = playingAlbumId === selectedAlbum.id;
+
+      return (
+        <div className="min-h-screen relative">
+          {/* Halo ambiant supérieur */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none fixed top-0 left-1/2 -translate-x-1/2 w-[920px] h-[340px] rounded-full blur-[150px] opacity-15 z-0"
+            style={{
+              background: "radial-gradient(circle, #C85A32 0%, #D4AF37 45%, transparent 75%)",
+            }}
+          />
+
+          {/* En-tête éditorial & navigation */}
+          <header className="sticky top-0 z-20 backdrop-blur-xl bg-[#0B0B0C]/85 border-b border-white/[0.08]">
+            <div className="max-w-[1440px] mx-auto px-4 sm:px-8 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="flex items-center gap-3">
+                  <span className="inline-block w-2.5 h-2.5 rounded-full bg-[#C85A32] ring-4 ring-[#C85A32]/20"></span>
+                  <h1 className="font-serif text-3xl sm:text-4xl tracking-tight text-[#F4F1EA]">
+                    KINETIC SILENCE
+                  </h1>
+                </div>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#141417] border border-white/[0.08] font-mono text-[11px] tracking-[0.12em] text-[#9E9EA9]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>PARIS // KINSHASA // EN PAIX</span>
+                </div>
+                {playingAlbumId && (
+                  <button
+                    onClick={() => {
+                      synthRef.current?.stop();
+                      setPlayingAlbumId(null);
+                    }}
+                    className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#C85A32]/20 border border-[#C85A32] font-mono text-[11px] text-[#F4F1EA]"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-ping"></span>
+                    <span>PLATINE EN COURS : {selectedAlbum.artist} (ARRÊTER)</span>
+                  </button>
+                )}
+              </div>
+
+              <nav
+                aria-label="Filtres de la monographie"
+                className="flex flex-wrap items-center gap-1.5 p-1 rounded-full bg-[#141417] border border-white/[0.08] self-start md:self-auto"
+              >
+                {[
+                  { key: "ALL", label: "Tout voir" },
+                  { key: "MUSIC", label: "La Sonothèque" },
+                  { key: "MANGA", label: "Le Panthéon Manga" },
+                  { key: "FOOTBALL", label: "Le Terrain" },
+                ].map((pill) => (
+                  <button
+                    key={pill.key}
+                    onClick={() => setActiveFilter(pill.key)}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all ${
+                      activeFilter === pill.key
+                        ? "bg-[#C85A32] text-[#F4F1EA]"
+                        : "text-[#9E9EA9] hover:text-[#F4F1EA]"
+                    }`}
+                  >
+                    {pill.label}
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </header>
+
+          {/* Corps principal en grille Bento */}
+          <main className="relative z-10 max-w-[1440px] mx-auto px-4 sm:px-8 pt-8 pb-20">
+            <section className="mb-8 pb-6 border-b border-white/[0.08] flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+              <div className="max-w-3xl">
+                <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#C85A32] mb-2">
+                  MONOGRAPHIE NUMÉRIQUE CURATÉE // AUCUNE HIÉRARCHIE • ESSENTIELS PURS
+                </p>
+                <h2 className="font-serif text-3xl sm:text-5xl leading-[1.08] tracking-tight text-[#F4F1EA]">
+                  Puissance brute, précision d'orfèvre et choix délibéré de la paix.
+                </h2>
+              </div>
+              <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-center lg:items-end justify-between gap-2 font-mono text-xs text-[#9E9EA9]">
+                <span>ARCHITECTURE : GRILLE BENTO ÉDITORIALE</span>
+                <span className="text-[#D4AF37]">
+                  PILIERS : SONOTHÈQUE • PANTHÉON MANGA • LE TERRAIN
+                </span>
+              </div>
+            </section>
+
+            <div className="grid grid-cols-12 gap-6">
+              {/* PILIER 1 : LA SONOTHÈQUE */}
+              {(activeFilter === "ALL" || activeFilter === "MUSIC") && (
+                <section
+                  onMouseEnter={() => setHoveredTileId("SOUND")}
+                  onMouseLeave={() => setHoveredTileId(null)}
+                  className={`${
+                    activeFilter === "MUSIC" ? "col-span-12" : "col-span-12 lg:col-span-6"
+                  } spring-card rounded-2xl bg-[#141417] border border-white/[0.08] hover:border-[#C85A32]/50 p-6 sm:p-8 flex flex-col justify-between ${getTileFocusClass("SOUND")}`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-4">
+                      <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#C85A32]">
+                        [LA SONOTHÈQUE // COLLECTION SANS CLASSEMENT]
+                      </span>
+                      <button
+                        onClick={() => setDrawerMode({ type: "MUSIC", initialAlbum: selectedAlbum })}
+                        className="font-mono text-xs text-[#9E9EA9] hover:text-[#F4F1EA] bg-[#1E1E24] px-3 py-1.5 rounded-full border border-white/[0.08] transition-colors"
+                      >
+                        Ouvrir le Bac à Vinyles ↗
+                      </button>
+                    </div>
+
+                    <h2 className="font-serif text-4xl text-[#F4F1EA] mb-3">
+                      La Sonothèque
+                    </h2>
+                    <blockquote className="text-sm sm:text-base text-[#9E9EA9] italic border-l-2 border-[#C85A32] pl-4 mb-6">
+                      « Des basses granitiques de Sevran aux guitares de velours de Kinshasa jusqu'aux confessions du sud de Londres — aucune frontière lorsque l'exigence artistique est absolue. »
+                    </blockquote>
+
+                    {/* Onglets de fréquences atmosphériques */}
+                    <div
+                      role="tablist"
+                      aria-label="Catégories de la Sonothèque"
+                      className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6 p-1.5 rounded-xl bg-[#0B0B0C] border border-white/[0.06]"
+                    >
+                      {MUSIC_CATEGORIES.map((cat) => (
+                        <button
+                          key={cat.key}
+                          role="tab"
+                          aria-selected={activeMusicCat === cat.key}
+                          onClick={() => handleMusicCategorySwitch(cat.key)}
+                          className={`px-3 py-2 rounded-lg font-mono text-xs uppercase tracking-wider transition-all ${
+                            activeMusicCat === cat.key
+                              ? "bg-[#1E1E24] text-[#F4F1EA] border border-[#C85A32]/50"
+                              : "text-[#9E9EA9] hover:text-[#F4F1EA]"
+                          }`}
+                        >
+                          {cat.shortLabel}
+                        </button>
+                      ))}
+                    </div>
+
+                    {/* Platine Vinyle Interactive */}
+                    <div className="bg-[#0B0B0C] border border-white/[0.08] rounded-xl p-5 mb-5 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                      <div
+                        onClick={() => togglePlayAlbum(selectedAlbum)}
+                        title="Cliquer pour lancer ou arrêter la rotation du vinyle"
+                        className={`vinyl-sleeve cursor-pointer relative w-32 h-32 sm:w-36 sm:h-36 shrink-0 ${
+                          isSelectedPlaying ? "vinyl-sleeve-playing" : ""
+                        }`}
+                      >
+                        <div
+                          className={`vinyl-disc absolute inset-y-1 -right-7 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-tr from-[#0B0B0C] via-[#262630] to-[#0B0B0C] border border-white/15 flex items-center justify-center ${
+                            isSelectedPlaying ? "disc-spinning" : "vinyl-disc-idle"
+                          }`}
+                        >
+                          <div
+                            className="w-9 h-9 rounded-full border-2 border-[#0B0B0C] flex items-center justify-center"
+                            style={{ backgroundColor: selectedAlbum.accentColor }}
+                          >
+                            <div className="w-2 h-2 rounded-full bg-[#0B0B0C]" />
+                          </div>
+                        </div>
+
+                        <img
+                          src={selectedAlbum.coverImage}
+                          onError={(e) => { e.currentTarget.src = selectedAlbum.fallbackCoverSvg; }}
+                          alt={`${selectedAlbum.artist} — ${selectedAlbum.title}`}
+                          className="relative z-10 w-full h-full rounded-lg border border-white/15 object-cover shadow-xl"
+                        />
+                      </div>
+
+                      <div className="flex-1 sm:pl-4">
+                        <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-[#1E1E24] text-[#D4AF37]">
+                          ESSENTIEL HORS CLASSEMENT • {selectedAlbum.origin} // {selectedAlbum.rpm}
+                        </span>
+                        <h3 className="font-serif text-2xl text-[#F4F1EA] mt-1.5">
+                          {selectedAlbum.artist} — <em className="text-[#D4AF37]">{selectedAlbum.title}</em>
+                        </h3>
+                        <p className="text-sm text-[#F4F1EA]/90 mt-1.5 leading-relaxed">
+                          {selectedAlbum.editorial}
+                        </p>
+                        <div className="mt-4 pt-3 border-t border-white/[0.08] flex flex-wrap items-center gap-3">
+                          <button
+                            onClick={() => togglePlayAlbum(selectedAlbum)}
+                            className="px-3.5 py-1.5 rounded-full bg-[#C85A32] hover:bg-[#C85A32]/90 text-[#F4F1EA] font-mono text-xs uppercase tracking-wider transition-all"
+                          >
+                            {isSelectedPlaying ? "■ Arrêter la Platine" : "▶ Écouter l'Extrait"}
+                          </button>
+                          <span className="font-mono text-[11px] text-[#9E9EA9]">
+                            {selectedAlbum.audioDescription}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Liste des disques de la fréquence active */}
+                    <div className="space-y-2.5">
+                      {filteredAlbums.map((album) => {
+                        const isPlaying = playingAlbumId === album.id;
+                        return (
+                          <div
+                            key={album.id}
+                            onClick={() => setSelectedAlbum(album)}
+                            className={`spring-row cursor-pointer p-3.5 rounded-xl border flex items-center justify-between gap-4 ${
+                              selectedAlbum.id === album.id
+                                ? "bg-[#1E1E24] border-[#C85A32]/60"
+                                : "bg-[#0B0B0C]/60 border-white/[0.06] hover:border-white/15"
+                            }`}
+                          >
+                            <div className="flex items-center gap-3.5 min-w-0">
+                              <img
+                                src={album.coverImage}
+                                onError={(e) => { e.currentTarget.src = album.fallbackCoverSvg; }}
+                                alt={album.title}
+                                className="w-12 h-12 rounded-lg object-cover border border-white/10 shrink-0"
+                              />
+                              <div className="min-w-0">
+                                <div className="text-sm font-medium text-[#F4F1EA] truncate">
+                                  <span className="font-mono text-xs text-[#C85A32] mr-2">✦</span>
+                                  {album.artist} – <em className="font-serif text-lg text-[#D4AF37]">{album.title}</em>
+                                </div>
+                                <p className="text-xs text-[#9E9EA9] mt-0.5 line-clamp-2">{album.editorial}</p>
+                              </div>
+                            </div>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                togglePlayAlbum(album);
+                              }}
+                              className={`px-3 py-1 rounded-full border font-mono text-[10px] uppercase tracking-wider shrink-0 transition-colors ${
+                                isPlaying
+                                  ? "bg-[#C85A32] border-[#C85A32] text-[#F4F1EA]"
+                                  : "bg-[#141417] border-white/10 text-[#D4AF37] hover:text-[#F4F1EA]"
+                              }`}
+                            >
+                              {isPlaying ? "En rotation" : "Tourner"}
+                            </button>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {/* PILIER 2 : LE PANTHÉON MANGA */}
+              {(activeFilter === "ALL" || activeFilter === "MANGA") && (
+                <section
+                  onMouseEnter={() => setHoveredTileId("MANGA")}
+                  onMouseLeave={() => setHoveredTileId(null)}
+                  className={`${
+                    activeFilter === "MANGA" ? "col-span-12" : "col-span-12 lg:col-span-6"
+                  } spring-card rounded-2xl bg-[#141417] border border-white/[0.08] hover:border-[#D4AF37]/50 p-6 sm:p-8 flex flex-col justify-between ${getTileFocusClass("MANGA")}`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-4">
+                      <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#D4AF37]">
+                        [LE PANTHÉON MANGA // FRESQUES D'ENCRE & PHILOSOPHIE]
+                      </span>
+                      <button
+                        onClick={() => setDrawerMode({ type: "MANGA", initialManga: MANGA_CRUCIBLE_DATA[0] })}
+                        className="font-mono text-xs text-[#9E9EA9] hover:text-[#F4F1EA] bg-[#1E1E24] px-3 py-1.5 rounded-full border border-white/[0.08] transition-colors"
+                      >
+                        Explorer le Panthéon Complet ↗
+                      </button>
+                    </div>
+
+                    <h2 className="font-serif text-4xl text-[#F4F1EA] mb-3">
+                      Le Panthéon Manga
+                    </h2>
+                    <blockquote className="text-sm sm:text-base text-[#9E9EA9] italic border-l-2 border-[#D4AF37] pl-4 mb-6">
+                      « Du premier Kaméhaméha de l'enfance au serment de Thorfinn : "Je n'ai aucun ennemi." Le véritable combat ne se livre jamais contre autrui, mais face à soi-même. »
+                    </blockquote>
+
+                    {/* Triptyque d'ouverture sur le canevas principal */}
+                    <div className="space-y-3.5 mb-6">
+                      {featuredManga.map((manga) => (
+                        <article
+                          key={manga.id}
+                          onClick={() => setDrawerMode({ type: "MANGA", initialManga: manga })}
+                          className="manga-card spring-row cursor-pointer rounded-xl bg-[#0B0B0C] border border-white/[0.1] hover:border-[#F4F1EA]/40 p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4"
+                        >
+                          <div className="w-full sm:w-28 h-24 rounded-lg border border-white/10 overflow-hidden shrink-0 bg-[#141417]">
+                            <img
+                              src={manga.artworkUrl}
+                              onError={(e) => { e.currentTarget.src = manga.fallbackArtworkSvg; }}
+                              alt={manga.title}
+                              className="manga-ink-img w-full h-full object-cover"
+                            />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
+                              <span className="px-2 py-0.5 rounded bg-[#F4F1EA] text-[#0B0B0C] font-mono text-[10px] font-bold">
+                                {manga.kanjiMotif}
+                              </span>
+                              <span className="font-mono text-xs text-[#D4AF37]">{manga.author}</span>
+                            </div>
+                            <h3 className="font-serif text-2xl text-[#F4F1EA]">{manga.title}</h3>
+                            <p className="text-sm text-[#F4F1EA]/85 mt-1 leading-relaxed">{manga.editorial}</p>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+
+                    {/* Galerie étendue avec aperçus visuels directs */}
+                    <div className="rounded-xl bg-[#0B0B0C]/80 border border-white/[0.08] p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="font-mono text-xs uppercase text-[#9E9EA9]">
+                          PILIERS NARRATIFS & DUELS STRATÉGIQUES (CLIQUER POUR LIRE)
+                        </span>
+                        <span className="font-mono text-[11px] text-[#C85A32]">
+                          GALERIE D'ENCRE
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        {archiveManga.map((work) => (
+                          <button
+                            key={work.id}
+                            onClick={() => setDrawerMode({ type: "MANGA", initialManga: work })}
+                            className="manga-card p-2.5 rounded-lg bg-[#141417] hover:bg-[#1E1E24] border border-white/[0.08] hover:border-[#D4AF37]/50 text-left flex items-center gap-3 transition-all"
+                          >
+                            <img
+                              src={work.artworkUrl}
+                              onError={(e) => { e.currentTarget.src = work.fallbackArtworkSvg; }}
+                              alt={work.title}
+                              className="manga-ink-img w-12 h-12 rounded object-cover border border-white/10 shrink-0"
+                            />
+                            <div className="min-w-0">
+                              <div className="font-serif text-base text-[#F4F1EA] truncate">{work.title}</div>
+                              <div className="font-mono text-[10px] text-[#9E9EA9] truncate">{work.author} • {work.kanjiMotif}</div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              )}
+
+              {/* PILIER 3 : LE TERRAIN (ÂGE D'OR DU FOOTBALL 1990–2010) */}
+              {(activeFilter === "ALL" || activeFilter === "FOOTBALL") && (
+                <section
+                  onMouseEnter={() => setHoveredTileId("FOOTBALL")}
+                  onMouseLeave={() => setHoveredTileId(null)}
+                  className={`col-span-12 spring-card rounded-2xl bg-[#141417] border border-white/[0.08] hover:border-[#D4AF37]/50 p-6 sm:p-8 ${getTileFocusClass("FOOTBALL")}`}
+                >
+                  <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8 pb-6 border-b border-white/[0.08]">
+                    <div>
+                      <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#D4AF37] block mb-2">
+                        [LE TERRAIN • ARCHIVE DE L'ÂGE D'OR 1990–2010]
+                      </span>
+                      <h2 className="font-serif text-4xl text-[#F4F1EA] mb-3">
+                        Le Terrain
+                      </h2>
+                      <blockquote className="text-sm sm:text-base text-[#9E9EA9] italic border-l-2 border-[#D4AF37] pl-4 max-w-3xl">
+                        « Les résumés célèbrent les buteurs ; mais ce sont la rigueur tactique, les sentinelles infatigables et les charnières impériales qui bâtissent les dynasties. »
+                      </blockquote>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-3">
+                      <div className="px-3.5 py-2 rounded-xl bg-[#0B0B0C] border border-white/[0.08] font-mono text-xs text-[#F4F1EA]">
+                        <span className="text-[#9E9EA9] block text-[10px]">
+                          DOUBLE ALLÉGEANCE
+                        </span>
+                        PARIS SAINT-GERMAIN × MANCHESTER UNITED
+                      </div>
+                      <button
+                        onClick={() => setDrawerMode({ type: "FOOTBALL", initialCard: FOOTBALL_LEGACY_DATA[0] })}
+                        className="font-mono text-xs text-[#F4F1EA] bg-[#1E1E24] hover:bg-[#C85A32] px-4 py-3 rounded-xl border border-white/[0.08] transition-colors"
+                      >
+                        Ouvrir le Dossier Tactique ↗
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+                    {FOOTBALL_LEGACY_DATA.map((card) => (
+                      <article
+                        key={card.id}
+                        onClick={() => setDrawerMode({ type: "FOOTBALL", initialCard: card })}
+                        className="spring-card cursor-pointer rounded-xl bg-[#0B0B0C] border border-[#D4AF37]/25 hover:border-[#D4AF37] p-5 flex flex-col justify-between transition-all"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between gap-2 pb-2 mb-3 border-b border-white/[0.08]">
+                            <span className="font-mono text-[10px] tracking-widest uppercase text-[#D4AF37]">
+                              {card.tag}
+                            </span>
+                            <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-[#141417] text-[#9E9EA9]">
+                              {card.era}
+                            </span>
+                          </div>
+                          <h3 className="font-serif text-2xl text-[#F4F1EA] mb-1">{card.title}</h3>
+                          <p className="font-mono text-[11px] text-[#C85A32] mb-3">{card.subtitle}</p>
+                          <p className="text-sm text-[#F4F1EA]/90 leading-relaxed">{card.editorial}</p>
+                        </div>
+                        <div className="mt-5 pt-3 border-t border-white/[0.06] font-mono text-[10px] text-[#9E9EA9] flex justify-between">
+                          <span>{card.tacticalRole}</span>
+                          <span className="text-[#D4AF37]">DOSSIER →</span>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              )}
+            </div>
+          </main>
+
+          {/* TIROIR ÉDITORIAL LATÉRAL (SLIDE-OVER) */}
+          {drawerMode && (
+            <div className="fixed inset-0 z-50 flex justify-end">
+              <div
+                onClick={() => setDrawerMode(null)}
+                className="fixed inset-0 bg-black/75 backdrop-blur-sm"
+              />
+              <aside
+                role="dialog"
+                aria-modal="true"
+                className="drawer-slide-in relative z-10 w-full max-w-2xl bg-[#141417] border-l border-white/[0.12] h-full overflow-y-auto p-6 sm:p-10"
+              >
+                <div className="sticky top-0 z-20 -mx-6 sm:-mx-10 -mt-6 sm:-mt-10 px-6 sm:px-10 py-5 bg-[#141417]/95 backdrop-blur-md flex items-center justify-between mb-6 border-b border-white/[0.08]">
+                  <div>
+                    <span className="font-mono text-xs uppercase text-[#C85A32]">
+                      ARCHIVE ÉDITORIALE INTÉGRALE // SANS CLASSEMENT NI HIÉRARCHIE
+                    </span>
+                    <h3 className="font-serif text-3xl text-[#F4F1EA]">
+                      {drawerMode.type === "MUSIC" && "La Sonothèque — Collection Intégrale"}
+                      {drawerMode.type === "MANGA" && "Le Panthéon Manga — Fresques & Récits"}
+                      {drawerMode.type === "FOOTBALL" && "Le Terrain — Âge d'Or 1990–2010"}
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => setDrawerMode(null)}
+                    className="px-3.5 py-1.5 rounded-full bg-[#1E1E24] hover:bg-[#C85A32] font-mono text-xs text-[#F4F1EA] border border-white/[0.1] transition-colors"
+                  >
+                    FERMER [✕]
+                  </button>
+                </div>
+
+                {drawerMode.type === "MUSIC" && (
+                  <div className="space-y-8">
+                    {MUSIC_CATEGORIES.map((category) => (
+                      <div key={category.key} className="space-y-3">
+                        <h4 className="font-mono text-xs uppercase tracking-[0.15em] text-[#D4AF37] border-b border-white/[0.08] pb-2">
+                          {category.fullTitle}
+                        </h4>
+                        {SOUND_SPECTRUM_DATA.filter((r) => r.category === category.key).map((rec) => {
+                          const isPlaying = playingAlbumId === rec.id;
+                          return (
+                            <div
+                              key={rec.id}
+                              className={`p-4 rounded-xl border flex flex-col sm:flex-row gap-4 ${
+                                drawerMode.initialAlbum?.id === rec.id
+                                  ? "bg-[#1E1E24] border-[#C85A32]"
+                                  : "bg-[#0B0B0C] border-white/[0.08]"
+                              }`}
+                            >
+                              <img
+                                src={rec.coverImage}
+                                onError={(e) => { e.currentTarget.src = rec.fallbackCoverSvg; }}
+                                alt={rec.title}
+                                className="w-20 h-20 rounded-lg object-cover border border-white/10 shrink-0"
+                              />
+                              <div className="flex-1">
+                                <div className="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                  <div className="font-serif text-xl text-[#F4F1EA]">
+                                    {rec.artist} – <em className="text-[#D4AF37]">{rec.title}</em>
+                                  </div>
+                                  <span className="font-mono text-[10px] text-[#9E9EA9]">
+                                    {rec.origin} // {rec.rpm}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-[#F4F1EA]/85 mt-1 mb-3 leading-relaxed">{rec.editorial}</p>
+                                <button
+                                  onClick={() => togglePlayAlbum(rec)}
+                                  className="px-3 py-1 rounded-full bg-[#141417] hover:bg-[#C85A32] border border-white/15 font-mono text-[11px] text-[#D4AF37] hover:text-[#F4F1EA] transition-colors"
+                                >
+                                  {isPlaying ? "■ Arrêter la Boucle" : `▶ Écouter (${rec.audioDescription})`}
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {drawerMode.type === "MANGA" && (
+                  <div className="space-y-4">
+                    {MANGA_CRUCIBLE_DATA.map((work) => (
+                      <div
+                        key={work.id}
+                        className={`p-4 rounded-xl border flex flex-col sm:flex-row gap-4 ${
+                          drawerMode.initialManga?.id === work.id
+                            ? "bg-[#1E1E24] border-[#D4AF37]"
+                            : "bg-[#0B0B0C] border-white/[0.08]"
+                        }`}
+                      >
+                        <img
+                          src={work.artworkUrl}
+                          onError={(e) => { e.currentTarget.src = work.fallbackArtworkSvg; }}
+                          alt={work.title}
+                          className="manga-ink-img w-full sm:w-28 h-24 rounded-lg object-cover border border-white/10 shrink-0"
+                        />
+                        <div>
+                          <div className="font-serif text-xl text-[#F4F1EA]">
+                            <em>{work.title}</em> ({work.author}) — <span className="font-mono text-xs text-[#D4AF37]">{work.kanjiMotif}</span>
+                          </div>
+                          <div className="font-mono text-[10px] text-[#9E9EA9] mt-0.5">{work.categoryLabel}</div>
+                          <p className="text-sm text-[#F4F1EA]/85 mt-1.5 leading-relaxed">{work.editorial}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {drawerMode.type === "FOOTBALL" && (
+                  <div className="space-y-4">
+                    {FOOTBALL_LEGACY_DATA.map((card) => (
+                      <div
+                        key={card.id}
+                        className={`p-5 rounded-xl border ${
+                          drawerMode.initialCard?.id === card.id
+                            ? "bg-[#1E1E24] border-[#D4AF37]"
+                            : "bg-[#0B0B0C] border-white/[0.08]"
+                        }`}
+                      >
+                        <div className="font-mono text-[11px] text-[#D4AF37] mb-1">
+                          {card.tag} // {card.era}
+                        </div>
+                        <div className="font-serif text-2xl text-[#F4F1EA]">{card.title}</div>
+                        <div className="font-mono text-xs text-[#C85A32] mt-0.5 mb-2">{card.subtitle}</div>
+                        <p className="text-sm text-[#F4F1EA]/90 leading-relaxed">{card.editorial}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </aside>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
