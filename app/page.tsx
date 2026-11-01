@@ -113,6 +113,7 @@ export interface AlbumEntry {
   format: string;
   accentColor: string;
   previewTrackTitle: string;
+  deezerTrackId?: string;
   coverImage: string;
   artworkUrl: string;
   previewUrl: string;
@@ -167,8 +168,9 @@ export const MUSIC_CATEGORIES: {
   },
 ];
 
-// PILIER 1 : LA SONOTHÈQUE (14 vinyles essentiels non classés avec préécoute 30s réelle)
-export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
+// PILIER 1 : LA SONOTHÈQUE (15 vinyles essentiels non classés avec préécoute 30s réelle)
+export const SOUND_SPECTRUM_DATA = [
+  // 1. Tiakola - WpointM (Cœur de pirate)
   {
     id: "tiakola-wpointm",
     artist: "Tiakola",
@@ -179,75 +181,62 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     rpm: "33 ⅓ Tours",
     format: "33 ⅓ Tours",
     accentColor: "#D4AF37",
-    previewTrackTitle: "Sans cœur",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCtIZFhx1UfgleL0QK0e4-LK9RO3afL3AzU4lHWGi2Yw&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCtIZFhx1UfgleL0QK0e4-LK9RO3afL3AzU4lHWGi2Yw&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/c3/9f/62/c39f62c0-8d5f-df1e-35ee-d6bf091be5a0/mzaf_10577934442111000624.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Tiakola",
-      "WpointM",
-      "#D4AF37",
-      "#C85A32",
-      "RUMBA"
-    ),
+    previewTrackTitle: "Cœur de pirate",
+    deezerTrackId: "4304492892",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/20e710fb1b502101b9ec74833e66a310/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/20e710fb1b502101b9ec74833e66a310/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Tiakola", "WpointM", "#D4AF37", "#C85A32", "RUMBA"),
     audioDescription: "Accords mélodiques afro-urbains & rebond chaleureux",
-    productionNotes:
-      "Croisement entre groove décalé ivoirien, rumba congolaise & spleen nocturne de marcheur",
-    keyTracks: [
-      "Sans cœur",
-      "Caméléon",
-      "Mode de vie",
-      "AF1 NOUVO",
-      "La vie d’un homme",
-    ],
-    editorial:
-      "L'ancrage viscéral dans mes racines congolaises. Sur WpointM, Tiakola atteint une maturité poignante en mariant l'ambiance festive à un spleen nocturne qui me touche en plein cœur. 'Sans cœur' reste mon titre absolu : des paroles qui ont fait écho direct à ce que je traversais, posées sur un groove aux inspirations ivoiriennes et décalées irrésistibles, tout comme 'Caméléon' et son refrain qui rappelle qu'on peut aimer voir ailleurs mais qu'on n'est jamais aussi bien que chez soi. Entre la fougue de 'Mode de vie', l'énergie de 'AF1 NOUVO' et les touches de rumba intemporelle dans 'La vie d’un homme', ce disque m'encourage à embrasser pleinement d'où je viens. C'est l'essence même de mes marches nocturnes de 20 000 pas : une bulle où la nostalgie et l'apaisement prennent le relais sur l'agitation.",
+    productionNotes: "Croisement entre groove décalé ivoirien, rumba congolaise & spleen nocturne de marcheur",
+    keyTracks: ["Cœur de pirate", "Sans cœur", "Caméléon", "Mode de vie", "AF1 NOUVO", "La vie d’un homme"],
+    editorial: "L'ancrage viscéral dans mes racines congolaises. Sur WpointM, Tiakola atteint une maturité poignante en mariant l'ambiance festive à un spleen nocturne qui me touche en plein cœur. 'Cœur de pirate' et 'Sans cœur' résonnent directement avec ce que je traversais, posés sur un groove aux inspirations ivoiriennes et décalées irrésistibles, tout comme 'Caméléon' et son refrain qui rappelle qu'on peut aimer voir ailleurs mais qu'on n'est jamais aussi bien que chez soi. Entre la fougue de 'Mode de vie', l'énergie de 'AF1 NOUVO' et les touches de rumba intemporelle dans 'La vie d’un homme', ce disque m'encourage à embrasser pleinement d'où je viens. C'est l'essence même de mes marches nocturnes de 20 000 pas : une bulle où la nostalgie et l'apaisement prennent le relais sur l'agitation."
   },
+
+  // 2. Dosseh - Perestroïka (Le dehors)
   {
     id: "dosseh-perestroika",
     artist: "Dosseh",
-    title: "Perestroïka & Trop tôt pour mourir",
+    title: "Perestroïka",
+    category: "TRAP",
+    categoryLabel: "Trap & Onde de Choc Pure",
+    origin: "Orléans, FR",
+    rpm: "33 ⅓ Tours (Mixtape Fondatrice)",
+    format: "33 ⅓ Tours (Mixtape Fondatrice)",
+    accentColor: "#9E9EA9",
+    previewTrackTitle: "Le dehors",
+    deezerTrackId: "96149636",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/cbf938382bfbc3bd9e5c437ac0240bcc/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/cbf938382bfbc3bd9e5c437ac0240bcc/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Dosseh", "Perestroïka", "#9E9EA9", "#C85A32", "TRAP808"),
+    audioDescription: "Trap glaciale, caisse claire chirurgicale & basses sombres d'Orléans",
+    productionNotes: "TRAP / Impact & Street Realism • Freestyles #YuriNegrosky & Mixtape Fondatrice",
+    keyTracks: ["Le dehors", "Scarla", "Bouteilles et Glocks", "Bando", "Shoot", "L'âge de nos actes"],
+    editorial: "La naissance d'un rouleau compresseur. Révélé dès la rage affamée des freestyles #YuriNegrosky, Dosseh installe avec Perestroïka une trap glaciale, chirurgicale et sans pitié. Des bangers froids comme 'Scarla', 'Bouteilles et Glocks', 'Bando' ou 'Shoot' côtoient des bilans lucides d'une violence feutrée sur 'Le dehors' et 'L'âge de nos actes'. Une mixtape au grain sombre et impitoyable qui a posé l'ADN du rap d'Orléans sur la carte."
+  },
+
+  // 3. Dosseh - Trop tôt pour mourir (Fleur d'automne)
+  {
+    id: "dosseh-ttpm",
+    artist: "Dosseh",
+    title: "Trop tôt pour mourir",
     category: "LYRICISME",
     categoryLabel: "Lyricisme & Introspection Lucide",
     origin: "Orléans, FR",
-    rpm: "Double Vinyle",
-    format: "Double Vinyle",
-    accentColor: "#9E9EA9",
+    rpm: "Double Vinyle (Édition Introspective)",
+    format: "Double Vinyle (Édition Introspective)",
+    accentColor: "#D4AF37",
     previewTrackTitle: "Fleur d'automne",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8v4yVZEe0WY_WR7QrPX1CCbKFQ4q7RKxvVryV30Si0w&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8v4yVZEe0WY_WR7QrPX1CCbKFQ4q7RKxvVryV30Si0w&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/28/67/62/28676239-015d-85fa-7b96-6571faeb6cfb/mzaf_14470377284988636142.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Dosseh",
-      "Perestroïka & Trop tôt pour mourir",
-      "#9E9EA9",
-      "#C85A32",
-      "CROWN"
-    ),
-    audioDescription: "Piano mineur d'asphalte & caisse claire percutante",
-    productionNotes:
-      "Architectures sombres & chirurgicales, pianos mineurs et batterie lourde (#YuriNegrosky)",
-    keyTracks: [
-      "Scarla",
-      "Bouteilles et Glocks",
-      "Bando",
-      "Le dehors",
-      "L'âge de nos actes",
-      "Djamel",
-      "Dina Sanichar",
-      "Caiman & Astrakan",
-      "La vie de César",
-      "Fleur d'automne",
-    ],
-    editorial:
-      "Une démonstration totale de plume et de noirceur. Marqué depuis les freestyles #YuriNegrosky, j'ai trouvé dans Perestroïka la maîtrise brute du rap dur et chirurgical ('Scarla', 'Bouteilles et Glocks', 'Bando'), équilibrée par des rétrospectives lucides comme 'Le dehors' et 'L'âge de nos actes'. Cette claque a été décuplée par Trop tôt pour mourir, un projet transportant de bout en bout : le storytelling monumental de 'Djamel', la finesse de 'Dina Sanichar', la tension de 'Caiman & Astrakan' ou 'La vie de César', et par-dessus tout 'Fleur d'automne', une masterclass absolue et bouleversante sur la perte de sa mère et sa place sacrée. Un classique indéboulonnable.",
+    deezerTrackId: "2536365851",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/9e8dfe4a6b0d903bf81bba64b6ca7e7f/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/9e8dfe4a6b0d903bf81bba64b6ca7e7f/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Dosseh", "Trop tôt pour mourir", "#D4AF37", "#C85A32", "CROWN"),
+    audioDescription: "Piano mineur crépusculaire, cordes dramatiques & confession vocale",
+    productionNotes: "LYRICISME / Maturité & Spleen Crépusculaire • Tragédie Humaine & Storytelling",
+    keyTracks: ["Fleur d'automne", "Djamel", "Dina Sanichar", "Caiman & Astrakan", "La vie de César"],
+    editorial: "Le chef-d'œuvre de la maturité et du deuil. Une œuvre transportante de bout en bout qui transcende le simple album de rap pour atteindre la tragédie humaine pure. Porté par le storytelling phénoménal de 'Djamel', l'amertume de 'Dina Sanichar', la tension de 'Caiman & Astrakan' et 'La vie de César', le projet culmine sur 'Fleur d'automne' : une masterclass absolue, déchirante et digne, dédiée à la perte de sa mère et à son empreinte éternelle. Un classique intemporel."
   },
+
+  // 4. Kaaris - Or Noir Part 2 (À l'heure / LEF - Pochette Officielle Rétablie)
   {
     id: "kaaris-ornoir2",
     artist: "Kaaris",
@@ -258,34 +247,18 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     rpm: "45 Tours",
     format: "45 Tours",
     accentColor: "#D4AF37",
-    previewTrackTitle: "LEF",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGcxBY_tt8b-E96DkNGC5INsqLfd3u1mQxzAYVske-Wg&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGcxBY_tt8b-E96DkNGC5INsqLfd3u1mQxzAYVske-Wg&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8e/31/35/8e3135bf-70dc-4a4b-9706-5a415ff6aeb1/mzaf_1241154562080358872.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Kaaris",
-      "Or Noir Part 2",
-      "#D4AF37",
-      "#C85A32",
-      "TRAP808"
-    ),
+    previewTrackTitle: "À l'heure",
+    deezerTrackId: "75523754",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/281d1eac28ccdb47651b06b261850437/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/281d1eac28ccdb47651b06b261850437/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Kaaris", "Or Noir Part 2", "#D4AF37", "#C85A32", "TRAP808"),
     audioDescription: "Basses 808 sismiques & cuivres sombres de Sevran",
-    productionNotes:
-      "Productions sismiques, cuivres menaçants & basses 808 signées Therapy (2093)",
-    keyTracks: [
-      "Bizon",
-      "Bouchon de Liège",
-      "Paradis ou Enfer",
-      "Binks",
-      "Zoo",
-      "LEF",
-    ],
-    editorial:
-      "Le plus grand prime de l'histoire du rap francophone. En 2013-2014, Kaaris représentait l'alignement parfait : univers impitoyable, charisme de titan et prods sismiques de Therapy. De 'Bizon' à 'Bouchon de Liège', de 'Paradis ou Enfer' à 'Binks' et 'Zoo', chaque piste est une déflagration. Avec en point d'orgue sur 'LEF' cette punchline gravée au fer rouge : « Je crois que j'ai assez d'amour dans mon cœur pour vous faire la guerre, je crois qu'il n'y a pas assez de sang dans vos veines pour remplir mon verre ».",
+    productionNotes: "Productions sismiques, cuivres menaçants & basses 808 signées Therapy (2093)",
+    keyTracks: ["À l'heure", "LEF", "Bizon", "Bouchon de Liège", "Paradis ou Enfer", "Binks", "Zoo"],
+    editorial: "Le plus grand prime de l'histoire du rap francophone. En 2013-2014, Kaaris représentait l'alignement parfait : univers impitoyable, charisme de titan et prods sismiques de Therapy. De 'Bizon' à 'Bouchon de Liège', de 'Paradis ou Enfer' à 'Binks', 'Zoo' et 'À l'heure', chaque piste est une déflagration. Avec en point d'orgue sur 'LEF' cette punchline gravée au fer rouge : « Je crois que j'ai assez d'amour dans mon cœur pour vous faire la guerre, je crois qu'il n'y a pas assez de sang dans vos veines pour remplir mon verre »."
   },
+
+  // 5. Luidji - Saison 00 (Téléfoot)
   {
     id: "luidji-saison00",
     artist: "Luidji",
@@ -297,33 +270,17 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     format: "33 ⅓ Tours",
     accentColor: "#C85A32",
     previewTrackTitle: "Téléfoot",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4Wf2qqtfSNBETgcOXo7DJVvSRUbPYrUYXc6paKhTo5A&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4Wf2qqtfSNBETgcOXo7DJVvSRUbPYrUYXc6paKhTo5A&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/9c/e8/34/9ce8348b-ff3f-1c52-f61b-9f9f82635293/mzaf_402170327072551475.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Luidji",
-      "Saison 00",
-      "#C85A32",
-      "#9E9EA9",
-      "NOCTURNE"
-    ),
+    deezerTrackId: "2330156035",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/ced2fd43c866c02f35e1aae17ef20261/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/ced2fd43c866c02f35e1aae17ef20261/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Luidji", "Saison 00", "#C85A32", "#9E9EA9", "HARP"),
     audioDescription: "Accords Rhodes jazz veloutés & progression soul",
-    productionNotes:
-      "Claviers Rhodes veloutés, arrangements néo-soul & confession intimiste (Foufoune Palace)",
-    keyTracks: [
-      "Alexis",
-      "Joueur 1",
-      "Reste en vie",
-      "Miskine",
-      "Téléfoot",
-      "Monde",
-    ],
-    editorial:
-      "Un miroir poignant découvert plusieurs mois après sa sortie. Je me suis reconnu de plein fouet dans ce récit du petit garçon noir resté à l'écart, un écho direct à mes propres souvenirs de maternelle et de primaire. Du storytelling à l'état pur à travers 'Alexis', 'Joueur 1', 'Reste en vie' et 'Miskine'. Mon morceau favori reste l'immense 'Téléfoot', retraçant une jeunesse sans privilèges ni facilités avec les femmes avec une voix chantonnante d'une tristesse lumineuse, sans oublier 'Monde' et son vertige existentiel : ferai-je un jour partie des grands de ce monde ?",
+    productionNotes: "Claviers Rhodes veloutés, arrangements néo-soul & confession intimiste (Foufoune Palace)",
+    keyTracks: ["Alexis", "Joueur 1", "Reste en vie", "Miskine", "Téléfoot", "Monde"],
+    editorial: "Un miroir poignant découvert plusieurs mois après sa sortie. Je me suis reconnu de plein fouet dans ce récit du petit garçon noir resté à l'écart, un écho direct à mes propres souvenirs de maternelle et de primaire. Du storytelling à l'état pur à travers 'Alexis', 'Joueur 1', 'Reste en vie' et 'Miskine'. Mon morceau favori reste l'immense 'Téléfoot', retraçant une jeunesse sans privilèges ni facilités avec les femmes avec une voix chantonnante d'une tristesse lumineuse, sans oublier 'Monde' et son vertige existentiel : ferai-je un jour partie des grands de ce monde ?"
   },
+
+  // 6. Prototype - Farewell (Deux trois lourds)
   {
     id: "prototype-farewell",
     artist: "Prototype",
@@ -335,33 +292,17 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     format: "33 ⅓ Tours",
     accentColor: "#9E9EA9",
     previewTrackTitle: "Deux trois lourds",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNSyTZlbMdu6RXmPPNgkjmZ-SA4Er1rNwj1I3OpGjsng&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNSyTZlbMdu6RXmPPNgkjmZ-SA4Er1rNwj1I3OpGjsng&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/80/7e/d3/807ed33c-ff1a-6415-ef66-3d778842e47c/mzaf_10486395350920404415.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Prototype",
-      "Farewell",
-      "#9E9EA9",
-      "#C85A32",
-      "NOCTURNE"
-    ),
+    deezerTrackId: "2332721415",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/50e4d2f6d5322024d355e4f90b821fac/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/50e4d2f6d5322024d355e4f90b821fac/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Prototype", "Farewell", "#9E9EA9", "#C85A32", "CROWN"),
     audioDescription: "Synthétiseurs nocturnes & nappe vaporeuse d'autoroute",
-    productionNotes:
-      "Synthétiseurs atmosphériques, mélodies digitales & spleen nocturne",
-    keyTracks: [
-      "Le soleil est levé",
-      "Foulard",
-      "La loi",
-      "La vie d’avant",
-      "Un nouveau mort, un nouveau-né",
-      "Deux trois lourds",
-    ],
-    editorial:
-      "Une masterclass intégrale de A à Z, découverte grâce à un tweet prédisant le meilleur projet de l'année. Une osmose parfaite où son don glisse comme du miel dans les oreilles : 'Le soleil est levé', 'Foulard', 'La loi', 'La vie d’avant', ou encore le poignant 'Un nouveau mort, un nouveau-né' qui confronte le deuil déchirant d'un proche à l'arrivée salvatrice de son enfant. Avec en apothéose mon titre favori 'Deux trois lourds' : chant, mélodie, prod et flow s'y unissent dans un envol mélancolique irrésistible.",
+    productionNotes: "Synthétiseurs atmosphériques, mélodies digitales & spleen nocturne",
+    keyTracks: ["Le soleil est levé", "Foulard", "La loi", "La vie d’avant", "Un nouveau mort, un nouveau-né", "Deux trois lourds"],
+    editorial: "Une masterclass intégrale de A à Z, découverte grâce à un tweet prédisant le meilleur projet de l'année. Une osmose parfaite où son don glisse comme du miel dans les oreilles : 'Le soleil est levé', 'Foulard', 'La loi', 'La vie d’avant', ou encore le poignant 'Un nouveau mort, un nouveau-né' qui confronte le deuil déchirant d'un proche à l'arrivée salvatrice de son enfant. Avec en apothéose mon titre favori 'Deux trois lourds' : chant, mélodie, prod et flow s'y unissent dans un envol mélancolique irrésistible."
   },
+
+  // 7. Théodora - Bad Boy Lovestory (Entracte : Histoire d’amour, Commérages et Chardonnay)
   {
     id: "theodora-bbls",
     artist: "Théodora",
@@ -372,36 +313,18 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     rpm: "45 Tours",
     format: "45 Tours",
     accentColor: "#C85A32",
-    previewTrackTitle: "FNG",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmz61B_clLNcAQjyUYRTDE5zl-h_gohDMTU8zwcbwTtA&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmz61B_clLNcAQjyUYRTDE5zl-h_gohDMTU8zwcbwTtA&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/44/e9/a5/44e9a584-6ee5-35ef-0d48-8df097e937fc/mzaf_6563345862215902123.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Théodora",
-      "Bad Boy Lovestory",
-      "#C85A32",
-      "#D4AF37",
-      "HARP"
-    ),
+    previewTrackTitle: "Entracte",
+    deezerTrackId: "3354851401",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/dc4173f85c09ebde4973fccbc4a075f0/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/dc4173f85c09ebde4973fccbc4a075f0/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Théodora", "Bad Boy Lovestory", "#C85A32", "#D4AF37", "HARP"),
     audioDescription: "Synthé mélodique hyperpop & pulsation club deux-temps",
-    productionNotes:
-      "Fusion clubbing 2-step, hyperpop mélodique & spleen diasporique (Édition Mega BBL)",
-    keyTracks: [
-      "Kongolese sous BBL",
-      "FNG",
-      "Sorry Sorry So",
-      "Entracte à l'amour",
-      "Ils me rient tous au nez",
-      "PAY!",
-      "Mon bébé (Free Kitty Version)",
-      "GO!",
-    ],
-    editorial:
-      "Une révélation foudroyante. Après être passé à côté lors de 'Kongolese sous BBL', c’est en entendant une journaliste vanter l’album chez Mehdi Maïzi que j’ai plongé dedans. Et là, le choc : tout concorde à la perfection, entre la musicalité, la voix, les textes et le personnage. Une douceur extrême servie par 'FNG', 'Sorry Sorry So', 'Entracte à l'amour' ou 'Ils me rient tous au nez', magnifiée par la réédition Mega BBL et ses bangers imparables comme 'PAY!', 'Mon bébé (Free Kitty Version)' et 'GO!'. Une pépite intime.",
+    productionNotes: "Fusion clubbing 2-step, hyperpop mélodique & spleen diasporique (Édition Mega BBL)",
+    keyTracks: ["Kongolese sous BBL", "FNG", "Sorry Sorry So", "Entracte", "Ils me rient tous au nez", "PAY!", "Mon bébé (Free Kitty Version)", "GO!"],
+    editorial: "Une révélation foudroyante. Après être passé à côté lors de 'Kongolese sous BBL', c’est en entendant une journaliste vanter l’album chez Mehdi Maïzi que j’ai plongé dedans. Et là, le choc : tout concorde à la perfection, entre la musicalité, la voix, les textes et le personnage. Une douceur extrême servie par 'FNG', 'Sorry Sorry So', 'Entracte' ou 'Ils me rient tous au nez', magnifiée par la réédition Mega BBL et ses bangers imparables comme 'PAY!', 'Mon bébé (Free Kitty Version)' et 'GO!'. Une pépite intime."
   },
+
+  // 8. Leto - Trapstar 2 (Bonbonne)
   {
     id: "leto-trapstar2",
     artist: "Leto",
@@ -413,35 +336,17 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     format: "33 ⅓ Tours",
     accentColor: "#9E9EA9",
     previewTrackTitle: "Bonbonne",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-GIWrntdYGax9GZVN8oJ2sn2oQkj3UscQyAAssB43hw&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-GIWrntdYGax9GZVN8oJ2sn2oQkj3UscQyAAssB43hw&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/08/94/a9/0894a9a0-9831-2917-a0ea-c5ae124dca6f/mzaf_10488684617154247558.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Leto",
-      "Trapstar 2",
-      "#9E9EA9",
-      "#D4AF37",
-      "TRAP808"
-    ),
+    deezerTrackId: "705516322",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/89262acccab705396d3b8cd2734d75c7/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/89262acccab705396d3b8cd2734d75c7/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Leto", "Trapstar 2", "#9E9EA9", "#D4AF37", "TRAP808"),
     audioDescription: "Charlestons parisiens haute vélocité & basse élastique",
-    productionNotes:
-      "Guitares électriques brutes, charlestons haute vélocité & mélodies trap parisiennes (17e)",
-    keyTracks: [
-      "Hall à la scène",
-      "Sapologue",
-      "Balmain",
-      "Tes parents",
-      "Bitume",
-      "Adios",
-      "Traffic",
-      "Bonbonne",
-    ],
-    editorial:
-      "Le coup de foudre inattendu. Avant ce disque, j’écoutais Leto sans jamais penser que son univers résonnerait autant avec le mien. Et pourtant, la claque a été totale : une maîtrise magistrale de la mélodie et du flow, capable de passer de l'énergie électrique et brute d'une guitare sur 'Hall à la scène' à la douceur feutrée de 'Sapologue'. La trap y est maniée avec une efficacité redoutable sur 'Balmain', 'Tes parents', 'Bitume', 'Adios' et 'Traffic', avec en point d’orgue absolu la mélancolie pure de 'Bonbonne'. Un projet d'une force viscérale qui m'accompagne partout.",
+    productionNotes: "Guitares électriques brutes, charlestons haute vélocité & mélodies trap parisiennes (17e)",
+    keyTracks: ["Hall à la scène", "Sapologue", "Balmain", "Tes parents", "Bitume", "Adios", "Traffic", "Bonbonne"],
+    editorial: "Le coup de foudre inattendu. Avant ce disque, j’écoutais Leto sans jamais penser que son univers résonnerait autant avec le mien. Et pourtant, la claque a été totale : une maîtrise magistrale de la mélodie et du flow, capable de passer de l'énergie électrique et brute d'une guitare sur 'Hall à la scène' à la douceur feutrée de 'Sapologue'. La trap y est maniée avec une efficacité redoutable sur 'Balmain', 'Tes parents', 'Bitume', 'Adios' et 'Traffic', avec en point d’orgue absolu la mélancolie pure de 'Bonbonne'. Un projet d'une force viscérale qui m'accompagne partout."
   },
+
+  // 9. 13 Block - Triple S (Somme)
   {
     id: "13block-triples",
     artist: "13 Block",
@@ -452,27 +357,18 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     rpm: "33 ⅓ Tours",
     format: "33 ⅓ Tours",
     accentColor: "#C85A32",
-    previewTrackTitle: "Don Pablo",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWArKpGuj-p4cloGGdGAujrsI2r88xSowqvwYZqeXKuQ&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWArKpGuj-p4cloGGdGAujrsI2r88xSowqvwYZqeXKuQ&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/2e/58/a5/2e58a5be-45df-9d3e-e6ec-12ff28f323e0/mzaf_17203112347318182743.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "13 Block",
-      "Triple S",
-      "#C85A32",
-      "#9E9EA9",
-      "TRAP808"
-    ),
+    previewTrackTitle: "Somme (Couplet de Zed)",
+    deezerTrackId: "473355962",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/ba4acdb09b0fc025617073dc4a9af897/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/ba4acdb09b0fc025617073dc4a9af897/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("13 Block", "Triple S", "#C85A32", "#9E9EA9", "TRAP808"),
     audioDescription: "Arpège synthétique glacial & architecture sub-basse Ikaz Boi",
-    productionNotes:
-      "Direction artistique & productions synthétiques avant-gardistes signées Ikaz Boi",
+    productionNotes: "Direction artistique & productions synthétiques avant-gardistes signées Ikaz Boi",
     keyTracks: ["Don Pablo", "Somme", "Calibre", "Mood", "Vide", "Triple S"],
-    editorial:
-      "La sueur, la soif et les sous : la dureté brute du quartier et la réalité sans filtre de la banlieue. 13 Block maîtrise son univers avec une sagesse froide et sombre. Leurs messages ne s'embarrassent d'aucun artifice, mais la douceur des flows et le choix visionnaire des prods d'Ikaz Boi rendent cette amertume indispensable. Une nostalgie crue portée par des piliers colossaux : 'Don Pablo', 'Somme', 'Calibre', 'Mood', 'Vide' et le morceau éponyme 'Triple S'. Un niveau technique et atmosphérique tout simplement affolant.",
+    editorial: "La sueur, la soif et les sous : la dureté brute du quartier et la réalité sans filtre de la banlieue. 13 Block maîtrise son univers avec une sagesse froide et sombre. Leurs messages ne s'embarrassent d'aucun artifice, mais la douceur des flows et le choix visionnaire des prods d'Ikaz Boi rendent cette amertume indispensable. Une nostalgie crue portée par des piliers colossaux : 'Don Pablo', 'Somme', 'Calibre', 'Mood', 'Vide' et le morceau éponyme 'Triple S'. Un niveau technique et atmosphérique tout simplement affolant."
   },
+
+  // 10. Tiakola - Mélo (Si j'savais)
   {
     id: "tiakola-melo",
     artist: "Tiakola",
@@ -484,33 +380,17 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     format: "33 ⅓ Tours",
     accentColor: "#C85A32",
     previewTrackTitle: "Si j'savais",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXm3YLts4kZ2eX9B-Mp8gzJ9omxY2OcuEe1K0IUkO9iw&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXm3YLts4kZ2eX9B-Mp8gzJ9omxY2OcuEe1K0IUkO9iw&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/23/bf/82/23bf8226-c294-b209-6799-d419358a9e70/mzaf_15783321526487854611.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Tiakola",
-      "Mélo",
-      "#C85A32",
-      "#D4AF37",
-      "RUMBA"
-    ),
+    deezerTrackId: "1759430957",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/e760d4c6154c45759ebd2b8c0091c61d/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/e760d4c6154c45759ebd2b8c0091c61d/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Tiakola", "Mélo", "#C85A32", "#D4AF37", "RUMBA"),
     audioDescription: "Guitare rumba solaire & mélodie certifiée diamant",
-    productionNotes:
-      "Productions afro-mélodiques certifiées diamant & switchs de rythmiques solaires",
-    keyTracks: [
-      "Riri / No Camera",
-      "#TT",
-      "Arsenik",
-      "Parapluie",
-      "R.I.Peace",
-      "Si j’savais",
-    ],
-    editorial:
-      "L’explosion de la célébration et de la joie de vivre pure. Là où je craignais un projet fébrile ou redondant, Tiakola a livré une œuvre solaire, solide et travaillée au millimètre. Mon sommet personnel reste 'Riri / No Camera' avec son switch de prod lunaire en seconde partie qui m'a totalement pris par surprise. Une mention d'honneur à '#TT', 'Arsenik', 'Parapluie', 'R.I.Peace' et surtout 'Si j’savais', qui constitue à mon sens la pièce maîtresse absolue résumant à la perfection le personnage et son génie vocal.",
+    productionNotes: "Productions afro-mélodiques certifiées diamant & switchs de rythmiques solaires",
+    keyTracks: ["Riri / No Camera", "#TT", "Arsenik", "Parapluie", "R.I.Peace", "Si j’savais"],
+    editorial: "L’explosion de la célébration et de la joie de vivre pure. Là où je craignais un projet fébrile ou redondant, Tiakola a livré une œuvre solaire, solide et travaillée au millimètre. Mon sommet personnel reste 'Riri / No Camera' avec son switch de prod lunaire en seconde partie qui m'a totalement pris par surprise. Une mention d'honneur à '#TT', 'Arsenik', 'Parapluie', 'R.I.Peace' et surtout 'Si j’savais', qui constitue à mon sens la pièce maîtresse absolue résumant à la perfection le personnage et son génie vocal."
   },
+
+  // 11. Dehmo - Ethologie (Bloc / Éthologie)
   {
     id: "dehmo-ethologie",
     artist: "Dehmo",
@@ -521,27 +401,18 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     rpm: "33 ⅓ Tours",
     format: "33 ⅓ Tours",
     accentColor: "#787885",
-    previewTrackTitle: "Bloc",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHEqRcEwiJ3IzeY0MlsU6VcXH7iCKqucXdO5NNsX9Fjw&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHEqRcEwiJ3IzeY0MlsU6VcXH7iCKqucXdO5NNsX9Fjw&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/c5/40/e0/c540e0a5-2964-b0a6-2187-b9c1d0f50c05/mzaf_11306306560934098921.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Dehmo",
-      "Ethologie",
-      "#9E9EA9",
-      "#C85A32",
-      "NOCTURNE"
-    ),
+    previewTrackTitle: "Éthologie",
+    deezerTrackId: "359812771",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/872a3f9b3050c9af8b90999e4fccd3c7/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/872a3f9b3050c9af8b90999e4fccd3c7/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Dehmo", "Ethologie", "#9E9EA9", "#C85A32", "CROWN"),
     audioDescription: "Nappe synthétique crépusculaire & pulsation grave",
-    productionNotes:
-      "Nappes synthétiques crépusculaires, flegme parisien & mixage vocal clinique post-MZ",
-    keyTracks: ["Bloc", "Oui", "Désolé", "Rose"],
-    editorial:
-      "L'énergie flegmatique qui a transcendé la rupture. À la dissolution de la MZ, là où tous les projecteurs visaient Jok'Air, Dehmo a encaissé la fin du groupe avec un calme olympien et a riposté avec un classique froid. Éthologie déploie une précision d'écriture clinique et un réalisme parisien désabusé. Porté par des titres tranchants comme 'Bloc', 'Oui', 'Désolé' ou 'Rose', il impose une diction singulière et une noirceur élégante qui m'ont conquis instantanément.",
+    productionNotes: "Nappes synthétiques crépusculaires, flegme parisien & mixage vocal clinique post-MZ",
+    keyTracks: ["Bloc", "Éthologie", "Oui", "Désolé", "Rose"],
+    editorial: "L'énergie flegmatique qui a transcendé la rupture. À la dissolution de la MZ, là où tous les projecteurs visaient Jok'Air, Dehmo a encaissé la fin du groupe avec un calme olympien et a riposté avec un classique froid. Éthologie déploie une précision d'écriture clinique et un réalisme parisien désabusé. Porté par des titres tranchants comme 'Bloc', 'Oui', 'Désolé' ou 'Rose', il impose une diction singulière et une noirceur élégante qui m'ont conquis instantanément."
   },
+
+  // 12. Dave - The Boy Who Played the Harp (Raindance)
   {
     id: "dave-harp",
     artist: "Dave",
@@ -552,33 +423,18 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     rpm: "33 ⅓ Tours",
     format: "33 ⅓ Tours",
     accentColor: "#C85A32",
-    previewTrackTitle: "Raindance",
-    coverImage:
-      "https://static.fnac-static.com/multimedia/Images/FR/NR/ed/d4/28/19453165/1541-1/tsp20251003084032/The-Boy-Who-Played-The-Harp-Vinyle-Jaune.jpg",
-    artworkUrl:
-      "https://static.fnac-static.com/multimedia/Images/FR/NR/ed/d4/28/19453165/1541-1/tsp20251003084032/The-Boy-Who-Played-The-Harp-Vinyle-Jaune.jpg",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/05/cf/da/05cfda94-5cb0-4ce0-128f-7f892c554972/mzaf_10577934442111000624.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Dave",
-      "The Boy Who Played the Harp",
-      "#C85A32",
-      "#D4AF37",
-      "HARP"
-    ),
+    previewTrackTitle: "Fairchild",
+    deezerTrackId: "3616144152",
+    coverImage: "https://static.fnac-static.com/multimedia/Images/FR/NR/ed/d4/28/19453165/1541-1/tsp20251003084032/The-Boy-Who-Played-The-Harp-Vinyle-Jaune.jpg",
+    artworkUrl: "https://static.fnac-static.com/multimedia/Images/FR/NR/ed/d4/28/19453165/1541-1/tsp20251003084032/The-Boy-Who-Played-The-Harp-Vinyle-Jaune.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Dave", "The Boy Who Played the Harp", "#C85A32", "#D4AF37", "HARP"),
     audioDescription: "Cordes ambiantes & boucle de harpe de concert en ré mineur",
-    productionNotes:
-      "Arrangements piano, harpe de concert & dépouillement acoustique (Londres Sud)",
-    keyTracks: [
-      "175 Months",
-      "Raindance",
-      "Selfish",
-      "Fairchild",
-      "My 27th Birthday",
-    ],
-    editorial:
-      "L'artisanat absolu de la rime et du storytelling britannique. Les figures de style pleuvent avec une précision divine : la noirceur brute et inspirante de '175 Months', la vibration rassembleuse de 'Raindance', et la pluie de punchlines de 'Selfish'. Deux sommets me marquent à vie : 'Fairchild', qui dépeint une agression sexuelle avec une solitude et une terreur révoltantes, et cette confession déchirante sur 'My 27th Birthday' : « I wanna be a good man, but I wanna be myself too / And I don't think that I can do both, so I can't let her too close / It hurts, but I'm still movin', feel like it's me versus me and I'm still losin' ».",
+    productionNotes: "Arrangements piano, harpe de concert & dépouillement acoustique (Londres Sud)",
+    keyTracks: ["175 Months", "Raindance", "Selfish", "Fairchild", "My 27th Birthday"],
+    editorial: "L'artisanat absolu de la rime et du storytelling britannique. Les figures de style pleuvent avec une précision divine : la noirceur brute et inspirante de '175 Months', la vibration rassembleuse de 'Raindance', et la pluie de punchlines de 'Selfish'. Deux sommets me marquent à vie : 'Fairchild', qui dépeint une agression sexuelle avec une solitude et une terreur révoltantes, et cette confession déchirante sur 'My 27th Birthday' : « I wanna be a good man, but I wanna be myself too / And I don't think that I can do both, so I can't let her too close / It hurts, but I'm still movin', feel like it's me versus me and I'm still losin' »."
   },
+
+  // 13. Kendrick Lamar - GNX (reincarnated)
   {
     id: "kendrick-gnx",
     artist: "Kendrick Lamar",
@@ -590,34 +446,17 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     format: "33 ⅓ Tours",
     accentColor: "#D4AF37",
     previewTrackTitle: "reincarnated",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcYLoXvyAtiE5c-6htRmSJqqUYenTXblbeKtKi_a15ig&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcYLoXvyAtiE5c-6htRmSJqqUYenTXblbeKtKi_a15ig&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/55/e2/56/55e256b3-e8ee-efae-fa23-6447e954a7c1/mzaf_16999201509172605170.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Kendrick Lamar",
-      "GNX",
-      "#D4AF37",
-      "#C85A32",
-      "GRID"
-    ),
+    deezerTrackId: "3106586671",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/da5256ff8cacfe9ad90521f6e3792259/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/da5256ff8cacfe9ad90521f6e3792259/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Kendrick Lamar", "GNX", "#D4AF37", "#C85A32", "CROWN"),
     audioDescription: "Pulsation grave côte Ouest & précision rythmique",
-    productionNotes:
-      "Cadences West Coast épurées, basses Californiennes & polyphonie narrative (Compton)",
-    keyTracks: [
-      "wacced out murals",
-      "squabble up",
-      "tv off",
-      "dodger blue",
-      "luther",
-      "gloria",
-      "reincarnated",
-    ],
-    editorial:
-      "Le retour triomphal du souverain après avoir plié le clash face à Drake. Un cadeau magistral de fin d’année où Kendrick réinstalle le rap sur son trône de grandeur et d'authenticité. Des bangers tranchants ('wacced out murals', 'squabble up', 'tv off', 'dodger blue') aux douceurs absolues que sont 'luther' et 'gloria'. Et au sommet, l’emblématique 'reincarnated' : un dialogue spirituel puissant avec son Créateur, des récits polyphoniques habités, une prod à l'ancienne et une maturité qui transpire la vérité.",
+    productionNotes: "Cadences West Coast épurées, basses Californiennes & polyphonie narrative (Compton)",
+    keyTracks: ["wacced out murals", "squabble up", "tv off", "dodger blue", "luther", "gloria", "reincarnated"],
+    editorial: "Le retour triomphal du souverain après avoir plié le clash face à Drake. Un cadeau magistral de fin d’année où Kendrick réinstalle le rap sur son trône de grandeur et d'authenticité. Des bangers tranchants ('wacced out murals', 'squabble up', 'tv off', 'dodger blue') aux douceurs absolues que sont 'luther' et 'gloria'. Et au sommet, l’emblématique 'reincarnated' : un dialogue spirituel puissant avec son Créateur, des récits polyphoniques habités, une prod à l'ancienne et une maturité qui transpire la vérité."
   },
+
+  // 14. Fally Ipupa - Droit Chemin (Liputa)
   {
     id: "fally-droitchemin",
     artist: "Fally Ipupa",
@@ -629,34 +468,17 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     format: "Édition Or",
     accentColor: "#C85A32",
     previewTrackTitle: "Liputa",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEQqYhRmjQMFFWkkgXSZqpfzugzvYOFzZDDgEDPvOgpw&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEQqYhRmjQMFFWkkgXSZqpfzugzvYOFzZDDgEDPvOgpw&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8a/92/ff/8a92ff15-b778-5a21-996c-b397ce52b571/mzaf_1241154562080358872.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Fally Ipupa",
-      "Droit Chemin",
-      "#C85A32",
-      "#D4AF37",
-      "RUMBA"
-    ),
+    deezerTrackId: "481403742",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/f2ff8af71901375e4e018410edba3b54/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/f2ff8af71901375e4e018410edba3b54/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Fally Ipupa", "Droit Chemin", "#C85A32", "#D4AF37", "RUMBA"),
     audioDescription: "Guitare rumba congolaise acoustique & chaleur vocale",
-    productionNotes:
-      "Guitares acoustiques rumba congolaise d'orfèvre, sébéné & harmonies vocales de Kinshasa",
-    keyTracks: [
-      "Droit Chemin",
-      "Attente",
-      "Bakanja",
-      "Un prince à Southfork",
-      "Liputa",
-      "Orgazy",
-      "Associé",
-    ],
-    editorial:
-      "L'écrin d'or de mon enfance et de mes racines. Des chefs-d'œuvre comme le titre éponyme 'Droit Chemin', 'Attente', 'Bakanja' et 'Un prince à Southfork' côtoient des merveilles absolues de la rumba congolaise : 'Liputa', 'Orgazy' et 'Associé'. L'amour, le désir et l'élégance s'y entremêlent dans un festin harmonique étincelant qui continue de faire vibrer chaque fibre de ma mémoire familiale.",
+    productionNotes: "Guitares acoustiques rumba congolaise d'orfèvre, sébéné & harmonies vocales de Kinshasa",
+    keyTracks: ["Droit Chemin", "Attente", "Bakanja", "Un prince à Southfork", "Liputa", "Orgazy", "Associé"],
+    editorial: "L'écrin d'or de mon enfance et de mes racines. Des chefs-d'œuvre comme le titre éponyme 'Droit Chemin', 'Attente', 'Bakanja' et 'Un prince à Southfork' côtoient des merveilles absolues de la rumba congolaise : 'Liputa', 'Orgazy' et 'Associé'. L'amour, le désir et l'élégance s'y entremêlent dans un festin harmonique étincelant qui continue de faire vibrer chaque fibre de ma mémoire familiale."
   },
+
+  // 15. Michael Jackson - Thriller (Thriller)
   {
     id: "mj-thriller",
     artist: "Michael Jackson",
@@ -667,34 +489,16 @@ export const SOUND_SPECTRUM_DATA: AlbumEntry[] = [
     rpm: "Master Disc",
     format: "Master Disc",
     accentColor: "#D4AF37",
-    previewTrackTitle: "Billie Jean",
-    coverImage:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT48dpQFrluAdzYIUBsXnRAplJTlEL3Qgl7eHd2rjC1MA&s=10",
-    artworkUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT48dpQFrluAdzYIUBsXnRAplJTlEL3Qgl7eHd2rjC1MA&s=10",
-    previewUrl:
-      "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/a7/67/20/a767204f-124b-d72b-8c88-e244837542d4/mzaf_6195869408665042457.plus.aac.p.m4a",
-    fallbackCoverSvg: createAlbumCoverSvg(
-      "Michael Jackson",
-      "Thriller",
-      "#D4AF37",
-      "#C85A32",
-      "CROWN"
-    ),
+    previewTrackTitle: "Beat It",
+    deezerTrackId: "831272",
+    coverImage: "https://cdn-images.dzcdn.net/images/cover/3cec97b20f2cf2a8e97b621f0ba05e14/500x500-000000-80-0-0.jpg",
+    artworkUrl: "https://cdn-images.dzcdn.net/images/cover/3cec97b20f2cf2a8e97b621f0ba05e14/1000x1000-000000-80-0-0.jpg",
+    fallbackCoverSvg: createAlbumCoverSvg("Michael Jackson", "Thriller", "#D4AF37", "#C85A32", "CROWN"),
     audioDescription: "Groove synth-basse analogique & pulsation studio",
-    productionNotes:
-      "Direction magistrale de Quincy Jones aux studios Westlake (Los Angeles, 1982)",
-    keyTracks: [
-      "The Girl Is Mine",
-      "Thriller",
-      "Beat It",
-      "Billie Jean",
-      "Human Nature",
-      "P.Y.T.",
-    ],
-    editorial:
-      "Le chef-d'œuvre intouchable de la scène musicale mondiale. L'enchaînement de 'The Girl Is Mine', 'Thriller', 'Beat It', 'Billie Jean', 'Human Nature' et 'P.Y.T.' relève d'une sorcellerie de studio et d'une perfection harmonique qui ne sera jamais reproduite. Un sommet de génie intemporel, façonné avec Quincy Jones, qui traverse les générations sans la moindre ride.",
-  },
+    productionNotes: "Direction magistrale de Quincy Jones aux studios Westlake (Los Angeles, 1982)",
+    keyTracks: ["Thriller", "The Girl Is Mine", "Beat It", "Billie Jean", "Human Nature", "P.Y.T."],
+    editorial: "Le chef-d'œuvre intouchable de la scène musicale mondiale. L'enchaînement de 'The Girl Is Mine', 'Thriller', 'Beat It', 'Billie Jean', 'Human Nature' et 'P.Y.T.' relève d'une sorcellerie de studio et d'une perfection harmonique qui ne sera jamais reproduite. Un sommet de génie intemporel, façonné avec Quincy Jones, qui traverse les générations sans la moindre ride."
+  }
 ];
 
 // PILIER 2 : LE PANTHÉON MANGA (10 œuvres en couleurs vibrantes + GIFs cinématiques en boucle)
@@ -1363,8 +1167,9 @@ export default function KineticSilenceMonograph() {
   const [activeWallpaperId, setActiveWallpaperId] = useState<string>(
     WALLPAPER_OPTIONS[0].id
   );
-  const [activeMusicCat, setActiveMusicCat] =
-    useState<MusicCategoryKey>("LYRICISME");
+  const [activeMusicCat, setActiveMusicCat] = useState<
+    MusicCategoryKey | "ALL"
+  >("ALL");
   const [selectedAlbum, setSelectedAlbum] = useState<AlbumEntry>(
     SOUND_SPECTRUM_DATA[0]
   );
@@ -1376,6 +1181,7 @@ export default function KineticSilenceMonograph() {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(30);
   const [audioError, setAudioError] = useState<boolean>(false);
+  const [isAudioUnavailable, setIsAudioUnavailable] = useState<boolean>(false);
 
   const [drawerMode, setDrawerMode] = useState<
     | { type: "MUSIC"; initialAlbum?: AlbumEntry }
@@ -1389,44 +1195,176 @@ export default function KineticSilenceMonograph() {
   const [activeBonusSceneTab, setActiveBonusSceneTab] = useState<number>(1);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const ambientFallbackRef = useRef<{
+    timerId: ReturnType<typeof setInterval> | null;
+    ctx: AudioContext | null;
+    osc: OscillatorNode | null;
+  }>({ timerId: null, ctx: null, osc: null });
+
+  const stopAmbientFallback = useCallback(() => {
+    if (ambientFallbackRef.current.timerId) {
+      clearInterval(ambientFallbackRef.current.timerId);
+      ambientFallbackRef.current.timerId = null;
+    }
+    try {
+      if (ambientFallbackRef.current.osc) {
+        ambientFallbackRef.current.osc.stop();
+        ambientFallbackRef.current.osc.disconnect();
+        ambientFallbackRef.current.osc = null;
+      }
+      if (
+        ambientFallbackRef.current.ctx &&
+        ambientFallbackRef.current.ctx.state !== "closed"
+      ) {
+        ambientFallbackRef.current.ctx.close();
+      }
+    } catch {
+      // Nettoyage silencieux du synthétiseur d'ambiance de secours
+    }
+    ambientFallbackRef.current.ctx = null;
+  }, []);
+
+  const startAmbientFallback = useCallback(() => {
+    stopAmbientFallback();
+    setIsAudioUnavailable(true);
+    setAudioError(true);
+    setIsPlaying(true);
+    setDuration(30);
+
+    try {
+      const AudioCtx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext?: typeof AudioContext })
+          .webkitAudioContext;
+      if (AudioCtx) {
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const lfo = ctx.createOscillator();
+        const lfoGain = ctx.createGain();
+        const mainGain = ctx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(110, ctx.currentTime);
+        lfo.type = "sine";
+        lfo.frequency.setValueAtTime(1.8, ctx.currentTime);
+        lfoGain.gain.setValueAtTime(0.012, ctx.currentTime);
+        mainGain.gain.setValueAtTime(0.018, ctx.currentTime);
+
+        lfo.connect(lfoGain);
+        lfoGain.connect(mainGain.gain);
+        osc.connect(mainGain);
+        mainGain.connect(ctx.destination);
+
+        osc.start();
+        lfo.start();
+        ambientFallbackRef.current.ctx = ctx;
+        ambientFallbackRef.current.osc = osc;
+      }
+    } catch {
+      // Rotation silencieuse du sillon vinyle si le contexte audio est restreint
+    }
+
+    const startTs = Date.now();
+    ambientFallbackRef.current.timerId = setInterval(() => {
+      const elapsed = (Date.now() - startTs) / 1000;
+      if (elapsed >= 30) {
+        stopAmbientFallback();
+        setIsPlaying(false);
+        setProgress(0);
+        setCurrentTime(0);
+      } else {
+        setCurrentTime(elapsed);
+        setProgress((elapsed / 30) * 100);
+      }
+    }, 250);
+  }, [stopAmbientFallback]);
 
   useEffect(() => {
+    const audio = new Audio();
+    audio.preload = "auto";
+    audio.crossOrigin = "anonymous";
+    if (!audioRef.current) {
+      audioRef.current = audio;
+    } else {
+      audioRef.current.preload = "auto";
+      audioRef.current.crossOrigin = "anonymous";
+    }
     return () => {
+      stopAmbientFallback();
+      audio.pause();
       audioRef.current?.pause();
     };
-  }, []);
+  }, [stopAmbientFallback]);
 
   const handlePlayTrack = useCallback(
     (track: AlbumEntry) => {
       if (!track) return;
       setSelectedAlbum(track);
       if (currentTrack?.id === track.id && isPlaying) {
+        stopAmbientFallback();
         audioRef.current?.pause();
         setIsPlaying(false);
-      } else {
-        setCurrentTrack(track);
-        setAudioError(false);
-        if (audioRef.current) {
-          if (audioRef.current.src !== track.previewUrl) {
-            audioRef.current.src = track.previewUrl;
-            setProgress(0);
-            setCurrentTime(0);
-            setDuration(30);
-          }
-          audioRef.current
-            .play()
-            .then(() => {
-              setIsPlaying(true);
-              setAudioError(false);
-            })
-            .catch(() => {
-              setIsPlaying(false);
-              setAudioError(true);
-            });
-        }
+        return;
+      }
+
+      stopAmbientFallback();
+      setCurrentTrack(track);
+      setAudioError(false);
+      setIsAudioUnavailable(false);
+
+      if (!audioRef.current) {
+        const audio = new Audio();
+        audio.preload = "auto";
+        audio.crossOrigin = "anonymous";
+        audioRef.current = audio;
+      }
+
+      const player = audioRef.current;
+      player.preload = "auto";
+      player.crossOrigin = "anonymous";
+
+      if (player.src !== track.previewUrl) {
+        player.src = track.previewUrl;
+        player.load();
+        setProgress(0);
+        setCurrentTime(0);
+        setDuration(30);
+      }
+
+      const playPromise = player.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+            setAudioError(false);
+            setIsAudioUnavailable(false);
+          })
+          .catch(() => {
+            try {
+              player.removeAttribute("crossorigin");
+              player.src = track.previewUrl;
+              player.load();
+              const retryPromise = player.play();
+              if (retryPromise !== undefined) {
+                retryPromise
+                  .then(() => {
+                    setIsPlaying(true);
+                    setAudioError(false);
+                    setIsAudioUnavailable(false);
+                  })
+                  .catch(() => {
+                    startAmbientFallback();
+                  });
+              } else {
+                startAmbientFallback();
+              }
+            } catch {
+              startAmbientFallback();
+            }
+          });
       }
     },
-    [currentTrack, isPlaying]
+    [currentTrack, isPlaying, startAmbientFallback, stopAmbientFallback]
   );
 
   const handleTimeUpdate = useCallback(() => {
@@ -1449,15 +1387,19 @@ export default function KineticSilenceMonograph() {
           audioRef.current.src = track.previewUrl;
         }
       }
-      if (audioRef.current) {
-        const dur = audioRef.current.duration || 30;
-        const nextTime = (clamped / 100) * dur;
-        audioRef.current.currentTime = nextTime;
-        setCurrentTime(nextTime);
-        setProgress(clamped);
+      const dur = (audioRef.current && audioRef.current.duration) || 30;
+      const nextTime = (clamped / 100) * dur;
+      if (audioRef.current && !isAudioUnavailable) {
+        try {
+          audioRef.current.currentTime = nextTime;
+        } catch {
+          // Ignorer l'erreur de seek sur flux indisponible
+        }
       }
+      setCurrentTime(nextTime);
+      setProgress(clamped);
     },
-    [currentTrack]
+    [currentTrack, isAudioUnavailable]
   );
 
   const togglePlayAlbum = handlePlayTrack;
@@ -1513,14 +1455,21 @@ export default function KineticSilenceMonograph() {
 
   const filteredAlbums = useMemo(
     () =>
-      SOUND_SPECTRUM_DATA.filter((item) => item.category === activeMusicCat),
-    [activeMusicCat]
+      (activeMusicCat === "ALL"
+        ? SOUND_SPECTRUM_DATA
+        : SOUND_SPECTRUM_DATA.filter((item) => item.category === activeMusicCat)
+      ).filter((item) => item.id !== selectedAlbum.id),
+    [activeMusicCat, selectedAlbum.id]
   );
 
-  const handleMusicCategorySwitch = (cat: MusicCategoryKey) => {
+  const handleMusicCategorySwitch = (cat: MusicCategoryKey | "ALL") => {
     setActiveMusicCat(cat);
-    const firstInCat = SOUND_SPECTRUM_DATA.find((a) => a.category === cat);
-    if (firstInCat) setSelectedAlbum(firstInCat);
+    if (cat === "ALL") {
+      setSelectedAlbum(SOUND_SPECTRUM_DATA[0]);
+    } else {
+      const firstInCat = SOUND_SPECTRUM_DATA.find((a) => a.category === cat);
+      if (firstInCat) setSelectedAlbum(firstInCat);
+    }
   };
 
   const featuredManga = useMemo(
@@ -1545,6 +1494,8 @@ export default function KineticSilenceMonograph() {
       {/* Moteur Audio HTML5 Unifié (Préécoute Haute Fidélité 30s) */}
       <audio
         ref={audioRef}
+        preload="auto"
+        crossOrigin="anonymous"
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={() => {
           if (audioRef.current && audioRef.current.duration) {
@@ -1552,15 +1503,15 @@ export default function KineticSilenceMonograph() {
           }
         }}
         onEnded={() => {
+          stopAmbientFallback();
           setIsPlaying(false);
           setProgress(0);
           setCurrentTime(0);
         }}
         onError={() => {
-          setIsPlaying(false);
+          setIsAudioUnavailable(true);
           setAudioError(true);
         }}
-        preload="none"
       />
 
       {/* Fond d'écran plein écran commutable (3 atmosphères) + voile sombre */}
@@ -1715,7 +1666,7 @@ export default function KineticSilenceMonograph() {
                     style={{ animationDuration: "4s" }}
                   />
                   <span>
-                    [LA SONOTHÈQUE // COLLECTION PERSONNELLE SANS CLASSEMENT]
+                    [LA SONOTHÈQUE // {SOUND_SPECTRUM_DATA.length} VINYLES ESSENTIELS SANS CLASSEMENT]
                   </span>
                 </div>
                 <button
@@ -1727,7 +1678,7 @@ export default function KineticSilenceMonograph() {
                   }
                   className="inline-flex items-center gap-1.5 font-mono text-xs text-[#F4F1EA] bg-[#1E1E24] hover:bg-[#C85A32] px-4 py-2 rounded-full border border-white/[0.1] transition-colors"
                 >
-                  <span>Explorer l&apos;Intégrale des Vinyles</span>
+                  <span>Explorer l&apos;Intégrale des {SOUND_SPECTRUM_DATA.length} Vinyles</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -1741,12 +1692,24 @@ export default function KineticSilenceMonograph() {
                 chaque vinyle tourne à égalité d&apos;exigence. »
               </blockquote>
 
-              {/* Sélecteur de catégories musicales */}
+              {/* Sélecteur de catégories musicales (Tous les 15 vinyles par défaut + 4 catégories) */}
               <div
                 role="tablist"
                 aria-label="Catégories musicales"
-                className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-8 p-2 rounded-2xl bg-[#0B0B0C] border border-white/[0.08]"
+                className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-8 p-2 rounded-2xl bg-[#0B0B0C] border border-white/[0.08]"
               >
+                <button
+                  role="tab"
+                  aria-selected={activeMusicCat === "ALL"}
+                  onClick={() => handleMusicCategorySwitch("ALL")}
+                  className={`px-3.5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all text-center ${
+                    activeMusicCat === "ALL"
+                      ? "bg-[#C85A32] text-[#F4F1EA] shadow-md"
+                      : "text-[#9E9EA9] hover:text-[#F4F1EA] hover:bg-[#1E1E24]/60"
+                  }`}
+                >
+                  Tous ({SOUND_SPECTRUM_DATA.length})
+                </button>
                 {MUSIC_CATEGORIES.map((cat) => {
                   const isActive = activeMusicCat === cat.key;
                   return (
@@ -1914,11 +1877,14 @@ export default function KineticSilenceMonograph() {
                           }
                           className="w-full h-1.5 bg-[#0B0B0C] rounded-lg appearance-none cursor-pointer accent-[#C85A32]"
                         />
-                        {audioError &&
+                        {(isAudioUnavailable || audioError) &&
                           currentTrack?.id === selectedAlbum.id && (
-                            <p className="mt-2 font-mono text-[11px] text-[#D4AF37]">
-                              ⚠ Préécoute temporairement indisponible
-                            </p>
+                            <div className="mt-2.5 inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-[#C85A32]/15 border border-[#D4AF37]/40 font-mono text-[10px] uppercase tracking-wider text-[#D4AF37]">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
+                              <span>
+                                PRÉÉCOUTE NON DISPONIBLE (LIEN DE STREAM PROTÉGÉ)
+                              </span>
+                            </div>
                           )}
                       </div>
                     </div>
@@ -2023,6 +1989,16 @@ export default function KineticSilenceMonograph() {
                             </span>
                           ))}
                         </div>
+
+                        {(isAudioUnavailable || audioError) &&
+                          currentTrack?.id === album.id && (
+                            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#C85A32]/15 border border-[#D4AF37]/40 font-mono text-[9px] uppercase tracking-wider text-[#D4AF37]">
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
+                              <span>
+                                PRÉÉCOUTE NON DISPONIBLE (LIEN DE STREAM PROTÉGÉ)
+                              </span>
+                            </div>
+                          )}
 
                         <div className="flex items-center justify-between gap-2">
                           <span className="font-mono text-[10px] uppercase tracking-widest text-[#9E9EA9]">
@@ -2540,23 +2516,34 @@ export default function KineticSilenceMonograph() {
                         </p>
                       </div>
 
-                      {/* BARRE DE LECTURE DÉDIÉE DANS LE DOSSIER ÉTENDU (PRÉÉCOUTE 30S) */}
-                      <div className="p-4 sm:p-5 rounded-2xl bg-[#0B0B0C] border border-[#D4AF37]/40 shadow-xl space-y-4">
-                        <div className="flex flex-wrap items-center justify-between gap-2">
-                          <div className="flex items-center gap-2">
-                            <span className="px-2.5 py-1 rounded-md bg-[#C85A32]/20 border border-[#C85A32] font-mono text-[10px] uppercase tracking-widest text-[#F4F1EA]">
-                              TITRE EN VEDETTE
+                      {/* LECTEUR OFFICIEL DEEZER DANS LE DOSSIER ÉTENDU */}
+                      {focusedItem.data.deezerTrackId ? (
+                        <div className="w-full mt-4 rounded-2xl overflow-hidden border border-[#D4AF37]/40 bg-black/70 shadow-2xl p-2.5 backdrop-blur-md">
+                          <div className="flex items-center justify-between px-3 py-1.5 border-b border-white/10 mb-2">
+                            <span className="text-[11px] font-mono tracking-wider text-[#D4AF37] flex items-center gap-2">
+                              <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
+                              ÉCOUTE OFFICIELLE DEEZER • EXTRAIT DISPONIBLE
                             </span>
-                            <span className="font-serif italic text-xl text-[#D4AF37]">
-                              « {focusedItem.data.previewTrackTitle} »
+                            <span className="text-[10px] font-mono text-white/50">
+                              TITRE : « {focusedItem.data.previewTrackTitle} »
                             </span>
                           </div>
-                          <span className="px-2.5 py-1 rounded-md bg-[#141417] border border-white/10 font-mono text-[10px] uppercase tracking-wider text-[#D4AF37]">
-                            {playingAlbumId === focusedItem.data.id
-                              ? "LECTURE EN COURS"
-                              : "EXTRAIT (30S)"}
-                          </span>
+                          <iframe
+                            title={`Deezer Player - ${focusedItem.data.title}`}
+                            src={`https://widget.deezer.com/widget/dark/track/${focusedItem.data.deezerTrackId}?tracklist=false`}
+                            width="100%"
+                            height="152"
+                            frameBorder="0"
+                            allowtransparency="true"
+                            allow="encrypted-media; clipboard-write"
+                            className="rounded-xl w-full"
+                          />
                         </div>
+                      ) : (
+                        <div className="p-4 rounded-xl bg-[#0B0B0C] border border-[#D4AF37]/30 text-center font-mono text-xs text-[#D4AF37]">
+                          Lecteur Deezer en cours de synchronisation
+                        </div>
+                      )}
 
                         <div className="flex flex-wrap items-center gap-4">
                           <button
@@ -2626,11 +2613,14 @@ export default function KineticSilenceMonograph() {
                               )}
                             </span>
                           </div>
-                          {audioError &&
+                          {(isAudioUnavailable || audioError) &&
                             currentTrack?.id === focusedItem.data.id && (
-                              <p className="font-mono text-xs text-[#D4AF37] pt-1">
-                                ⚠ Préécoute temporairement indisponible
-                              </p>
+                              <div className="mt-2 inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-[#C85A32]/15 border border-[#D4AF37]/40 font-mono text-[10px] uppercase tracking-wider text-[#D4AF37]">
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
+                                <span>
+                                  PRÉÉCOUTE NON DISPONIBLE (LIEN DE STREAM PROTÉGÉ)
+                                </span>
+                              </div>
                             )}
                         </div>
                       </div>

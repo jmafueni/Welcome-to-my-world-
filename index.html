@@ -127,9 +127,6 @@
   <script type="text/babel">
     const { useState, useMemo, useEffect, useRef, useCallback } = React;
 
-    // ========================================================================
-    // 1. GÉNÉRATEURS VISUELS DE SECOURS (SI UNE IMAGE EXTERNE NE CHARGE PAS)
-    // ========================================================================
     function createAlbumCoverSvg(artist, title, accent, secondary, motif) {
       const motifGraphic =
         motif === "HARP"
@@ -197,22 +194,6 @@
       return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
     }
 
-    // ========================================================================
-    // 2. UTILITAIRES DU LECTEUR AUDIO HTML5 (PRÉÉCOUTE 30S HAUTE FIDÉLITÉ)
-    // ========================================================================
-    function formatAudioTime(seconds) {
-      if (!seconds || Number.isNaN(seconds) || !Number.isFinite(seconds)) {
-        return "0:00";
-      }
-      const totalSecs = Math.max(0, Math.floor(seconds));
-      const mins = Math.floor(totalSecs / 60);
-      const secs = totalSecs % 60;
-      return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-    }
-
-    // ========================================================================
-    // 3. ARRIÈRE-PLAN CANVAS VIVANT (PARTICULES & HALOS LUMINEUX RÉACTIFS)
-    // ========================================================================
     function LivingAmbientCanvas({ isAudioActive }) {
       const canvasRef = useRef(null);
       const activeRef = useRef(isAudioActive);
@@ -255,7 +236,6 @@
           tick += activeRef.current ? 0.032 : 0.012;
           ctx.clearRect(0, 0, width, height);
 
-          // Gradients radiaux flottants (Terracotta & Or Trophée)
           const orb1X = width * (0.25 + Math.sin(tick * 0.7) * 0.12);
           const orb1Y = height * (0.22 + Math.cos(tick * 0.5) * 0.1);
           const grad1 = ctx.createRadialGradient(orb1X, orb1Y, 10, orb1X, orb1Y, Math.max(width, height) * 0.45);
@@ -272,7 +252,6 @@
           ctx.fillStyle = grad2;
           ctx.fillRect(0, 0, width, height);
 
-          // Particules lumineuses flottantes
           const speedMult = activeRef.current ? 2.1 : 1.0;
           for (const p of particles) {
             p.x += p.vx * speedMult + Math.sin(tick + p.phase) * 0.18;
@@ -313,9 +292,6 @@
       );
     }
 
-    // ========================================================================
-    // 4. DONNÉES STRICTES CURATÉES (100% FRANÇAIS • SANS HIÉRARCHIE)
-    // ========================================================================
     const MUSIC_CATEGORIES = [
       {
         key: "LYRICISME",
@@ -339,7 +315,6 @@
       },
     ];
 
-    // PILIER 1 : LA SONOTHÈQUE (14 vinyles essentiels non classés avec préécoute 30s réelle)
     const SOUND_SPECTRUM_DATA = [
       {
         id: "tiakola-wpointm",
@@ -351,35 +326,55 @@
         rpm: "33 ⅓ Tours",
         format: "33 ⅓ Tours",
         accentColor: "#D4AF37",
-        previewTrackTitle: "Sans cœur",
+        previewTrackTitle: "Cœur De Pirate",
+        deezerTrackId: "4304492892",
         coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCtIZFhx1UfgleL0QK0e4-LK9RO3afL3AzU4lHWGi2Yw&s=10",
         artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCtIZFhx1UfgleL0QK0e4-LK9RO3afL3AzU4lHWGi2Yw&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/c3/9f/62/c39f62c0-8d5f-df1e-35ee-d6bf091be5a0/mzaf_10577934442111000624.plus.aac.p.m4a",
         fallbackCoverSvg: createAlbumCoverSvg("Tiakola", "WpointM", "#D4AF37", "#C85A32", "RUMBA"),
         audioDescription: "Accords mélodiques afro-urbains & rebond chaleureux",
         productionNotes: "Croisement entre groove décalé ivoirien, rumba congolaise & spleen nocturne de marcheur",
-        keyTracks: ["Sans cœur", "Caméléon", "Mode de vie", "AF1 NOUVO", "La vie d’un homme"],
-        editorial: "L'ancrage viscéral dans mes racines congolaises. Sur WpointM, Tiakola atteint une maturité poignante en mariant l'ambiance festive à un spleen nocturne qui me touche en plein cœur. 'Sans cœur' reste mon titre absolu : des paroles qui ont fait écho direct à ce que je traversais, posées sur un groove aux inspirations ivoiriennes et décalées irrésistibles, tout comme 'Caméléon' et son refrain qui rappelle qu'on peut aimer voir ailleurs mais qu'on n'est jamais aussi bien que chez soi. Entre la fougue de 'Mode de vie', l'énergie de 'AF1 NOUVO' et les touches de rumba intemporelle dans 'La vie d’un homme', ce disque m'encourage à embrasser pleinement d'où je viens. C'est l'essence même de mes marches nocturnes de 20 000 pas : une bulle où la nostalgie et l'apaisement prennent le relais sur l'agitation."
+        keyTracks: ["Cœur de pirate", "Caméléon", "Mode de vie", "AF1 NOUVO", "La vie d’un homme"],
+        editorial: "L'ancrage viscéral dans mes racines congolaises. Sur WpointM, Tiakola atteint une maturité poignante en mariant l'ambiance festive à un spleen nocturne qui me touche en plein cœur. 'Cœur de pirate' reste mon titre absolu : des paroles qui ont fait écho direct à ce que je traversais, posées sur un groove aux inspirations ivoiriennes et décalées irrésistibles, tout comme 'Caméléon' et son refrain qui rappelle qu'on peut aimer voir ailleurs mais qu'on n'est jamais aussi bien que chez soi. Entre la fougue de 'Mode de vie', l'énergie de 'AF1 NOUVO' et les touches de rumba intemporelle dans 'La vie d’un homme', ce disque m'encourage à embrasser pleinement d'où je viens. C'est l'essence même de mes marches nocturnes de 20 000 pas : une bulle où la nostalgie et l'apaisement prennent le relais sur l'agitation."
       },
       {
         id: "dosseh-perestroika",
         artist: "Dosseh",
-        title: "Perestroïka & Trop tôt pour mourir",
+        title: "Perestroïka",
+        category: "TRAP",
+        categoryLabel: "Trap & Onde de Choc Pure",
+        origin: "Orléans, FR",
+        rpm: "33 ⅓ Tours (Mixtape Fondatrice)",
+        format: "33 ⅓ Tours (Mixtape Fondatrice)",
+        accentColor: "#9E9EA9",
+        previewTrackTitle: "Le dehors",
+        deezerTrackId: "96149636",
+        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8v4yVZEe0WY_WR7QrPX1CCbKFQ4q7RKxvVryV30Si0w&s=10",
+        artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8v4yVZEe0WY_WR7QrPX1CCbKFQ4q7RKxvVryV30Si0w&s=10",
+        fallbackCoverSvg: createAlbumCoverSvg("Dosseh", "Perestroïka", "#9E9EA9", "#C85A32", "TRAP808"),
+        audioDescription: "Trap glaciale, caisse claire chirurgicale & basses sombres d'Orléans",
+        productionNotes: "TRAP / Impact & Street Realism • Freestyles #YuriNegrosky & Mixtape Fondatrice",
+        keyTracks: ["Le dehors", "Scarla", "Bouteilles et Glocks", "Bando", "Shoot", "L'âge de nos actes"],
+        editorial: "La naissance d'un rouleau compresseur. Révélé dès la rage affamée des freestyles #YuriNegrosky, Dosseh installe avec Perestroïka une trap glaciale, chirurgicale et sans pitié. Des bangers froids comme 'Scarla', 'Bouteilles et Glocks', 'Bando' ou 'Shoot' côtoient des bilans lucides d'une violence feutrée sur 'Le dehors' et 'L'âge de nos actes'. Une mixtape au grain sombre et impitoyable qui a posé l'ADN du rap d'Orléans sur la carte."
+      },
+      {
+        id: "dosseh-ttpm",
+        artist: "Dosseh",
+        title: "Trop tôt pour mourir",
         category: "LYRICISME",
         categoryLabel: "Lyricisme & Introspection Lucide",
         origin: "Orléans, FR",
-        rpm: "Double Vinyle",
-        format: "Double Vinyle",
-        accentColor: "#9E9EA9",
+        rpm: "Double Vinyle (Édition Introspective)",
+        format: "Double Vinyle (Édition Introspective)",
+        accentColor: "#D4AF37",
         previewTrackTitle: "Fleur d'automne",
-        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8v4yVZEe0WY_WR7QrPX1CCbKFQ4q7RKxvVryV30Si0w&s=10",
-        artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8v4yVZEe0WY_WR7QrPX1CCbKFQ4q7RKxvVryV30Si0w&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/28/67/62/28676239-015d-85fa-7b96-6571faeb6cfb/mzaf_14470377284988636142.plus.aac.p.m4a",
-        fallbackCoverSvg: createAlbumCoverSvg("Dosseh", "Perestroïka & Trop tôt pour mourir", "#9E9EA9", "#C85A32", "CROWN"),
-        audioDescription: "Piano mineur d'asphalte & caisse claire percutante",
-        productionNotes: "Architectures sombres & chirurgicales, pianos mineurs et batterie lourde (#YuriNegrosky)",
-        keyTracks: ["Scarla", "Bouteilles et Glocks", "Bando", "Le dehors", "L'âge de nos actes", "Djamel", "Dina Sanichar", "Caiman & Astrakan", "La vie de César", "Fleur d'automne"],
-        editorial: "Une démonstration totale de plume et de noirceur. Marqué depuis les freestyles #YuriNegrosky, j'ai trouvé dans Perestroïka la maîtrise brute du rap dur et chirurgical ('Scarla', 'Bouteilles et Glocks', 'Bando'), équilibrée par des rétrospectives lucides comme 'Le dehors' et 'L'âge de nos actes'. Cette claque a été décuplée par Trop tôt pour mourir, un projet transportant de bout en bout : le storytelling monumental de 'Djamel', la finesse de 'Dina Sanichar', la tension de 'Caiman & Astrakan' ou 'La vie de César', et par-dessus tout 'Fleur d'automne', une masterclass absolue et bouleversante sur la perte de sa mère et sa place sacrée. Un classique indéboulonnable."
+        deezerTrackId: "2536365851",
+        coverImage: "https://cdn-images.dzcdn.net/images/cover/9e8dfe4a6b0d903bf81bba64b6ca7e7f/500x500-000000-80-0-0.jpg",
+        artworkUrl: "https://cdn-images.dzcdn.net/images/cover/9e8dfe4a6b0d903bf81bba64b6ca7e7f/1000x1000-000000-80-0-0.jpg",
+        fallbackCoverSvg: createAlbumCoverSvg("Dosseh", "Trop tôt pour mourir", "#D4AF37", "#C85A32", "CROWN"),
+        audioDescription: "Piano mineur crépusculaire, cordes dramatiques & confession vocale",
+        productionNotes: "LYRICISME / Maturité & Spleen Crépusculaire • Tragédie Humaine & Storytelling",
+        keyTracks: ["Fleur d'automne", "Djamel", "Dina Sanichar", "Caiman & Astrakan", "La vie de César"],
+        editorial: "Le chef-d'œuvre de la maturité et du deuil. Une œuvre transportante de bout en bout qui transcende le simple album de rap pour atteindre la tragédie humaine pure. Porté par le storytelling phénoménal de 'Djamel', l'amertume de 'Dina Sanichar', la tension de 'Caiman & Astrakan' et 'La vie de César', le projet culmine sur 'Fleur d'automne' : une masterclass absolue, déchirante et digne, dédiée à la perte de sa mère et à son empreinte éternelle. Un classique intemporel."
       },
       {
         id: "kaaris-ornoir2",
@@ -391,10 +386,10 @@
         rpm: "45 Tours",
         format: "45 Tours",
         accentColor: "#D4AF37",
-        previewTrackTitle: "LEF",
-        coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGcxBY_tt8b-E96DkNGC5INsqLfd3u1mQxzAYVske-Wg&s=10",
-        artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGcxBY_tt8b-E96DkNGC5INsqLfd3u1mQxzAYVske-Wg&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8e/31/35/8e3135bf-70dc-4a4b-9706-5a415ff6aeb1/mzaf_1241154562080358872.plus.aac.p.m4a",
+        previewTrackTitle: "L.E.F",
+        deezerTrackId: "75523741",
+        coverImage: "https://cdn-images.dzcdn.net/images/cover/281d1eac28ccdb47651b06b261850437/500x500-000000-80-0-0.jpg",
+        artworkUrl: "https://cdn-images.dzcdn.net/images/cover/281d1eac28ccdb47651b06b261850437/500x500-000000-80-0-0.jpg",
         fallbackCoverSvg: createAlbumCoverSvg("Kaaris", "Or Noir Part 2", "#D4AF37", "#C85A32", "TRAP808"),
         audioDescription: "Basses 808 sismiques & cuivres sombres de Sevran",
         productionNotes: "Productions sismiques, cuivres menaçants & basses 808 signées Therapy (2093)",
@@ -412,9 +407,9 @@
         format: "33 ⅓ Tours",
         accentColor: "#C85A32",
         previewTrackTitle: "Téléfoot",
+        deezerTrackId: "2330156035",
         coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4Wf2qqtfSNBETgcOXo7DJVvSRUbPYrUYXc6paKhTo5A&s=10",
         artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4Wf2qqtfSNBETgcOXo7DJVvSRUbPYrUYXc6paKhTo5A&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/9c/e8/34/9ce8348b-ff3f-1c52-f61b-9f9f82635293/mzaf_402170327072551475.plus.aac.p.m4a",
         fallbackCoverSvg: createAlbumCoverSvg("Luidji", "Saison 00", "#C85A32", "#9E9EA9", "HARP"),
         audioDescription: "Accords Rhodes jazz veloutés & progression soul",
         productionNotes: "Claviers Rhodes veloutés, arrangements néo-soul & confession intimiste (Foufoune Palace)",
@@ -432,9 +427,9 @@
         format: "33 ⅓ Tours",
         accentColor: "#9E9EA9",
         previewTrackTitle: "Deux trois lourds",
+        deezerTrackId: "2332721415",
         coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNSyTZlbMdu6RXmPPNgkjmZ-SA4Er1rNwj1I3OpGjsng&s=10",
         artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNSyTZlbMdu6RXmPPNgkjmZ-SA4Er1rNwj1I3OpGjsng&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/80/7e/d3/807ed33c-ff1a-6415-ef66-3d778842e47c/mzaf_10486395350920404415.plus.aac.p.m4a",
         fallbackCoverSvg: createAlbumCoverSvg("Prototype", "Farewell", "#9E9EA9", "#C85A32", "CROWN"),
         audioDescription: "Synthétiseurs nocturnes & nappe vaporeuse d'autoroute",
         productionNotes: "Synthétiseurs atmosphériques, mélodies digitales & spleen nocturne",
@@ -451,10 +446,10 @@
         rpm: "45 Tours",
         format: "45 Tours",
         accentColor: "#C85A32",
-        previewTrackTitle: "FNG",
+        previewTrackTitle: "Entracte",
+        deezerTrackId: "3354851401",
         coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmz61B_clLNcAQjyUYRTDE5zl-h_gohDMTU8zwcbwTtA&s=10",
         artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmz61B_clLNcAQjyUYRTDE5zl-h_gohDMTU8zwcbwTtA&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/44/e9/a5/44e9a584-6ee5-35ef-0d48-8df097e937fc/mzaf_6563345862215902123.plus.aac.p.m4a",
         fallbackCoverSvg: createAlbumCoverSvg("Théodora", "Bad Boy Lovestory", "#C85A32", "#D4AF37", "HARP"),
         audioDescription: "Synthé mélodique hyperpop & pulsation club deux-temps",
         productionNotes: "Fusion clubbing 2-step, hyperpop mélodique & spleen diasporique (Édition Mega BBL)",
@@ -472,9 +467,9 @@
         format: "33 ⅓ Tours",
         accentColor: "#9E9EA9",
         previewTrackTitle: "Bonbonne",
+        deezerTrackId: "705516322",
         coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-GIWrntdYGax9GZVN8oJ2sn2oQkj3UscQyAAssB43hw&s=10",
         artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-GIWrntdYGax9GZVN8oJ2sn2oQkj3UscQyAAssB43hw&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/08/94/a9/0894a9a0-9831-2917-a0ea-c5ae124dca6f/mzaf_10488684617154247558.plus.aac.p.m4a",
         fallbackCoverSvg: createAlbumCoverSvg("Leto", "Trapstar 2", "#9E9EA9", "#D4AF37", "TRAP808"),
         audioDescription: "Charlestons parisiens haute vélocité & basse élastique",
         productionNotes: "Guitares électriques brutes, charlestons haute vélocité & mélodies trap parisiennes (17e)",
@@ -491,10 +486,10 @@
         rpm: "33 ⅓ Tours",
         format: "33 ⅓ Tours",
         accentColor: "#C85A32",
-        previewTrackTitle: "Don Pablo",
+        previewTrackTitle: "Somme (Couplet de Zed)",
+        deezerTrackId: "473355962",
         coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWArKpGuj-p4cloGGdGAujrsI2r88xSowqvwYZqeXKuQ&s=10",
         artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWArKpGuj-p4cloGGdGAujrsI2r88xSowqvwYZqeXKuQ&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/2e/58/a5/2e58a5be-45df-9d3e-e6ec-12ff28f323e0/mzaf_17203112347318182743.plus.aac.p.m4a",
         fallbackCoverSvg: createAlbumCoverSvg("13 Block", "Triple S", "#C85A32", "#9E9EA9", "TRAP808"),
         audioDescription: "Arpège synthétique glacial & architecture sub-basse Ikaz Boi",
         productionNotes: "Direction artistique & productions synthétiques avant-gardistes signées Ikaz Boi",
@@ -512,9 +507,9 @@
         format: "33 ⅓ Tours",
         accentColor: "#C85A32",
         previewTrackTitle: "Si j'savais",
+        deezerTrackId: "1759430957",
         coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXm3YLts4kZ2eX9B-Mp8gzJ9omxY2OcuEe1K0IUkO9iw&s=10",
         artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXm3YLts4kZ2eX9B-Mp8gzJ9omxY2OcuEe1K0IUkO9iw&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/23/bf/82/23bf8226-c294-b209-6799-d419358a9e70/mzaf_15783321526487854611.plus.aac.p.m4a",
         fallbackCoverSvg: createAlbumCoverSvg("Tiakola", "Mélo", "#C85A32", "#D4AF37", "RUMBA"),
         audioDescription: "Guitare rumba solaire & mélodie certifiée diamant",
         productionNotes: "Productions afro-mélodiques certifiées diamant & switchs de rythmiques solaires",
@@ -531,10 +526,10 @@
         rpm: "33 ⅓ Tours",
         format: "33 ⅓ Tours",
         accentColor: "#787885",
-        previewTrackTitle: "Bloc",
+        previewTrackTitle: "Éthologie",
+        deezerTrackId: "359812771",
         coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHEqRcEwiJ3IzeY0MlsU6VcXH7iCKqucXdO5NNsX9Fjw&s=10",
         artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHEqRcEwiJ3IzeY0MlsU6VcXH7iCKqucXdO5NNsX9Fjw&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/c5/40/e0/c540e0a5-2964-b0a6-2187-b9c1d0f50c05/mzaf_11306306560934098921.plus.aac.p.m4a",
         fallbackCoverSvg: createAlbumCoverSvg("Dehmo", "Ethologie", "#9E9EA9", "#C85A32", "CROWN"),
         audioDescription: "Nappe synthétique crépusculaire & pulsation grave",
         productionNotes: "Nappes synthétiques crépusculaires, flegme parisien & mixage vocal clinique post-MZ",
@@ -551,10 +546,10 @@
         rpm: "33 ⅓ Tours",
         format: "33 ⅓ Tours",
         accentColor: "#C85A32",
-        previewTrackTitle: "Raindance",
+        previewTrackTitle: "Fairchild",
+        deezerTrackId: "3616144152",
         coverImage: "https://static.fnac-static.com/multimedia/Images/FR/NR/ed/d4/28/19453165/1541-1/tsp20251003084032/The-Boy-Who-Played-The-Harp-Vinyle-Jaune.jpg",
         artworkUrl: "https://static.fnac-static.com/multimedia/Images/FR/NR/ed/d4/28/19453165/1541-1/tsp20251003084032/The-Boy-Who-Played-The-Harp-Vinyle-Jaune.jpg",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/05/cf/da/05cfda94-5cb0-4ce0-128f-7f892c554972/mzaf_10577934442111000624.plus.aac.p.m4a",
         fallbackCoverSvg: createAlbumCoverSvg("Dave", "The Boy Who Played the Harp", "#C85A32", "#D4AF37", "HARP"),
         audioDescription: "Cordes ambiantes & boucle de harpe de concert en ré mineur",
         productionNotes: "Arrangements piano, harpe de concert & dépouillement acoustique (Londres Sud)",
@@ -572,9 +567,9 @@
         format: "33 ⅓ Tours",
         accentColor: "#D4AF37",
         previewTrackTitle: "reincarnated",
+        deezerTrackId: "3106586671",
         coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcYLoXvyAtiE5c-6htRmSJqqUYenTXblbeKtKi_a15ig&s=10",
         artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcYLoXvyAtiE5c-6htRmSJqqUYenTXblbeKtKi_a15ig&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/55/e2/56/55e256b3-e8ee-efae-fa23-6447e954a7c1/mzaf_16999201509172605170.plus.aac.p.m4a",
         fallbackCoverSvg: createAlbumCoverSvg("Kendrick Lamar", "GNX", "#D4AF37", "#C85A32", "CROWN"),
         audioDescription: "Pulsation grave côte Ouest & précision rythmique",
         productionNotes: "Cadences West Coast épurées, basses Californiennes & polyphonie narrative (Compton)",
@@ -592,9 +587,9 @@
         format: "Édition Or",
         accentColor: "#C85A32",
         previewTrackTitle: "Liputa",
+        deezerTrackId: "481403742",
         coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEQqYhRmjQMFFWkkgXSZqpfzugzvYOFzZDDgEDPvOgpw&s=10",
         artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEQqYhRmjQMFFWkkgXSZqpfzugzvYOFzZDDgEDPvOgpw&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/8a/92/ff/8a92ff15-b778-5a21-996c-b397ce52b571/mzaf_1241154562080358872.plus.aac.p.m4a",
         fallbackCoverSvg: createAlbumCoverSvg("Fally Ipupa", "Droit Chemin", "#C85A32", "#D4AF37", "RUMBA"),
         audioDescription: "Guitare rumba congolaise acoustique & chaleur vocale",
         productionNotes: "Guitares acoustiques rumba congolaise d'orfèvre, sébéné & harmonies vocales de Kinshasa",
@@ -611,10 +606,10 @@
         rpm: "Master Disc",
         format: "Master Disc",
         accentColor: "#D4AF37",
-        previewTrackTitle: "Billie Jean",
+        previewTrackTitle: "Beat It",
+        deezerTrackId: "831272",
         coverImage: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT48dpQFrluAdzYIUBsXnRAplJTlEL3Qgl7eHd2rjC1MA&s=10",
         artworkUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT48dpQFrluAdzYIUBsXnRAplJTlEL3Qgl7eHd2rjC1MA&s=10",
-        previewUrl: "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/a7/67/20/a767204f-124b-d72b-8c88-e244837542d4/mzaf_6195869408665042457.plus.aac.p.m4a",
         fallbackCoverSvg: createAlbumCoverSvg("Michael Jackson", "Thriller", "#D4AF37", "#C85A32", "CROWN"),
         audioDescription: "Groove synth-basse analogique & pulsation studio",
         productionNotes: "Direction magistrale de Quincy Jones aux studios Westlake (Los Angeles, 1982)",
@@ -623,7 +618,6 @@
       }
     ];
 
-    // PILIER 2 : LE PANTHÉON MANGA (10 œuvres en couleurs vibrantes + GIFs cinématiques en boucle)
     const MANGA_CRUCIBLE_DATA = [
       {
         id: "dragon-ball",
@@ -778,9 +772,6 @@
       }
     ];
 
-    // ========================================================================
-    // 5. SÉLECTEUR DE FONDS D'ÉCRAN (3 ATMOSPHÈRES PLEIN ÉCRAN)
-    // ========================================================================
     const WALLPAPER_OPTIONS = [
       {
         id: "fond-01",
@@ -830,41 +821,9 @@
       );
     }
 
-    // ========================================================================
-    // 6. VISUALISEUR DE FRÉQUENCES EN TEMPS RÉEL
-    // ========================================================================
-    function FrequencyVisualizer({ isPlaying, accentColor }) {
-      const bars = [0.35, 0.75, 0.55, 0.95, 0.45, 0.85, 0.6, 1.0, 0.5, 0.9, 0.65, 0.8, 0.4, 0.7, 0.55, 0.35];
-      return (
-        <div
-          aria-label="Visualiseur de fréquences audio"
-          className="flex items-end gap-1 h-8 px-3 py-1.5 rounded-lg bg-[#141417] border border-white/[0.08]"
-        >
-          {bars.map((heightRatio, index) => (
-            <span
-              key={index}
-              className={`w-1 rounded-full transition-all duration-300 ${
-                isPlaying ? "eq-bar-active" : ""
-              }`}
-              style={{
-                height: isPlaying ? `${Math.round(heightRatio * 100)}%` : "24%",
-                backgroundColor: isPlaying ? accentColor : "#9E9EA9",
-                opacity: isPlaying ? 0.95 : 0.35,
-                animationDelay: `${index * 0.06}s`,
-                animationDuration: `${0.45 + (index % 4) * 0.14}s`,
-              }}
-            />
-          ))}
-        </div>
-      );
-    }
-
-    // ========================================================================
-    // 6B. POSTER HOLOGRAPHIQUE 3D DOUBLE-MÉDIA (AFFICHE STATIQUE + GIF ANIMÉ)
-    // ========================================================================
     function HolographicMangaPoster({ manga, heightClass = "h-64 sm:h-72", showAuthorBadge = true }) {
       const [isHovered, setIsHovered] = useState(false);
-      const [forcedMode, setForcedMode] = useState("AUTO"); // "AUTO" | "ANIMATED" | "POSTER"
+      const [forcedMode, setForcedMode] = useState("AUTO");
       const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0, sheenX: 50 });
 
       const showAnimated =
@@ -902,7 +861,6 @@
           }}
           className={`group relative ${heightClass} w-full overflow-hidden bg-[#141417] select-none`}
         >
-          {/* Média 1 : Affiche originale haute saturation */}
           <img
             src={manga.artworkUrl}
             onError={(e) => {
@@ -914,7 +872,6 @@
             }`}
           />
 
-          {/* Média 2 : GIF cinématique de la scène culte en fondu enchaîné */}
           <img
             src={manga.animationGifUrl}
             onError={(e) => {
@@ -926,7 +883,6 @@
             }`}
           />
 
-          {/* Reflet holographique diagonal au survol */}
           <div
             aria-hidden="true"
             style={{
@@ -941,7 +897,6 @@
 
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B0B0C] via-[#0B0B0C]/20 to-transparent z-10" />
 
-          {/* Badges supérieurs */}
           <span className="z-20 absolute top-3 left-3 px-3 py-1 rounded-md bg-[#0B0B0C]/85 backdrop-blur-md text-[#D4AF37] border border-[#D4AF37]/40 font-mono text-xs font-bold tracking-wider">
             {manga.kanjiMotif}
           </span>
@@ -957,7 +912,6 @@
             )}
           </div>
 
-          {/* Barre inférieure : Statut + Bouton tactile [AFFICHAGE : POSTER / ANIMÉ] */}
           <div className="z-20 absolute bottom-2.5 inset-x-3 flex flex-wrap items-center justify-between gap-2">
             <span
               className={`px-2.5 py-0.5 rounded font-mono text-[10px] uppercase tracking-wider border backdrop-blur-md transition-colors ${
@@ -986,91 +940,14 @@
       );
     }
 
-    // ========================================================================
-    // 7. APPLICATION PRINCIPALE (ARCHITECTURE 2 PILIERS À ÉCHELLE GÉANTE)
-    // ========================================================================
     function App() {
       const [activeFilter, setActiveFilter] = useState("ALL");
       const [activeWallpaperId, setActiveWallpaperId] = useState(WALLPAPER_OPTIONS[0].id);
-      const [activeMusicCat, setActiveMusicCat] = useState("LYRICISME");
+      const [activeMusicCat, setActiveMusicCat] = useState("ALL");
       const [selectedAlbum, setSelectedAlbum] = useState(SOUND_SPECTRUM_DATA[0]);
-      const [currentTrack, setCurrentTrack] = useState(SOUND_SPECTRUM_DATA[0]);
-      const [isPlaying, setIsPlaying] = useState(false);
-      const [progress, setProgress] = useState(0);
-      const [currentTime, setCurrentTime] = useState(0);
-      const [duration, setDuration] = useState(30);
-      const [audioError, setAudioError] = useState(false);
       const [drawerMode, setDrawerMode] = useState(null);
       const [focusedItem, setFocusedItem] = useState(null);
       const [activeBonusSceneTab, setActiveBonusSceneTab] = useState(1);
-      const audioRef = useRef(null);
-
-      useEffect(() => {
-        return () => {
-          audioRef.current?.pause();
-        };
-      }, []);
-
-      const handlePlayTrack = useCallback((track) => {
-        if (!track) return;
-        setSelectedAlbum(track);
-        if (currentTrack?.id === track.id && isPlaying) {
-          audioRef.current?.pause();
-          setIsPlaying(false);
-        } else {
-          setCurrentTrack(track);
-          setAudioError(false);
-          if (audioRef.current) {
-            if (audioRef.current.src !== track.previewUrl) {
-              audioRef.current.src = track.previewUrl;
-              setProgress(0);
-              setCurrentTime(0);
-              setDuration(30);
-            }
-            audioRef.current
-              .play()
-              .then(() => {
-                setIsPlaying(true);
-                setAudioError(false);
-              })
-              .catch(() => {
-                setIsPlaying(false);
-                setAudioError(true);
-              });
-          }
-        }
-      }, [currentTrack, isPlaying]);
-
-      const handleTimeUpdate = useCallback(() => {
-        if (audioRef.current && audioRef.current.duration) {
-          const cur = audioRef.current.currentTime;
-          const dur = audioRef.current.duration || 30;
-          setCurrentTime(cur);
-          setDuration(dur);
-          setProgress((cur / dur) * 100);
-        }
-      }, []);
-
-      const handleScrub = useCallback((track, pct) => {
-        const clamped = Math.max(0, Math.min(100, pct));
-        if (currentTrack?.id !== track.id) {
-          setCurrentTrack(track);
-          setSelectedAlbum(track);
-          if (audioRef.current) {
-            audioRef.current.src = track.previewUrl;
-          }
-        }
-        if (audioRef.current) {
-          const dur = audioRef.current.duration || 30;
-          const nextTime = (clamped / 100) * dur;
-          audioRef.current.currentTime = nextTime;
-          setCurrentTime(nextTime);
-          setProgress(clamped);
-        }
-      }, [currentTrack]);
-
-      const togglePlayAlbum = handlePlayTrack;
-      const playingAlbumId = isPlaying && currentTrack ? currentTrack.id : null;
 
       const navigateFocusedItem = useCallback((direction) => {
         setFocusedItem((current) => {
@@ -1114,14 +991,22 @@
       }, [navigateFocusedItem]);
 
       const filteredAlbums = useMemo(
-        () => SOUND_SPECTRUM_DATA.filter((item) => item.category === activeMusicCat),
-        [activeMusicCat]
+        () =>
+          (activeMusicCat === "ALL"
+            ? SOUND_SPECTRUM_DATA
+            : SOUND_SPECTRUM_DATA.filter((item) => item.category === activeMusicCat)
+          ).filter((item) => item.id !== selectedAlbum.id),
+        [activeMusicCat, selectedAlbum.id]
       );
 
       const handleMusicCategorySwitch = (cat) => {
         setActiveMusicCat(cat);
-        const first = SOUND_SPECTRUM_DATA.find((a) => a.category === cat);
-        if (first) setSelectedAlbum(first);
+        if (cat === "ALL") {
+          setSelectedAlbum(SOUND_SPECTRUM_DATA[0]);
+        } else {
+          const first = SOUND_SPECTRUM_DATA.find((a) => a.category === cat);
+          if (first) setSelectedAlbum(first);
+        }
       };
 
       const featuredManga = useMemo(
@@ -1133,41 +1018,12 @@
         []
       );
 
-      const isSelectedPlaying = isPlaying && currentTrack?.id === selectedAlbum.id;
-      const selectedAlbumProgress = currentTrack?.id === selectedAlbum.id ? progress : 0;
-      const selectedAlbumCurrentTime = currentTrack?.id === selectedAlbum.id ? currentTime : 0;
-      const selectedAlbumDuration = currentTrack?.id === selectedAlbum.id ? duration : 30;
-
       return (
         <div className="min-h-screen relative">
-          {/* Moteur Audio HTML5 Unifié (Préécoute Haute Fidélité 30s) */}
-          <audio
-            ref={audioRef}
-            onTimeUpdate={handleTimeUpdate}
-            onLoadedMetadata={() => {
-              if (audioRef.current && audioRef.current.duration) {
-                setDuration(audioRef.current.duration);
-              }
-            }}
-            onEnded={() => {
-              setIsPlaying(false);
-              setProgress(0);
-              setCurrentTime(0);
-            }}
-            onError={() => {
-              setIsPlaying(false);
-              setAudioError(true);
-            }}
-            preload="none"
-          />
-
-          {/* Fond d'écran plein écran commutable (3 atmosphères) + voile sombre */}
           <WallpaperBackdrop activeWallpaperId={activeWallpaperId} />
+          <LivingAmbientCanvas isAudioActive={false} />
 
-          {/* Arrière-plan Canvas HTML5 animé avec particules & halos réactifs */}
-          <LivingAmbientCanvas isAudioActive={isPlaying} />
-
-          {/* BARRE DE NAVIGATION COLLANTE */}
+          {/* BARRE DE NAVIGATION */}
           <header className="sticky top-0 z-30 backdrop-blur-xl bg-[#0B0B0C]/85 border-b border-white/[0.08]">
             <div className="max-w-[1600px] mx-auto px-4 sm:px-8 py-4 flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
               <div className="flex flex-wrap items-center gap-4">
@@ -1181,22 +1037,9 @@
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                   <span>PARIS // KINSHASA // FORCE TRANQUILLE</span>
                 </div>
-
-                {isPlaying && currentTrack && (
-                  <button
-                    onClick={() => handlePlayTrack(currentTrack)}
-                    className="inline-flex items-center gap-2.5 px-3.5 py-1 rounded-full bg-[#C85A32]/25 border border-[#C85A32] font-mono text-xs text-[#F4F1EA] hover:bg-[#C85A32]/40 transition-colors"
-                  >
-                    <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-ping"></span>
-                    <span>
-                      LECTURE EN COURS : {currentTrack.artist} — « {currentTrack.previewTrackTitle} » ({formatAudioTime(currentTime)} / {formatAudioTime(duration || 30)}) • METTRE EN PAUSE
-                    </span>
-                  </button>
-                )}
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                {/* Sélecteur de Fonds d'Écran (3 Atmosphères) */}
                 <div
                   role="group"
                   aria-label="Sélecteur de fond d'écran"
@@ -1223,7 +1066,6 @@
                   })}
                 </div>
 
-                {/* Navigation 2 Piliers (Sans Hiérarchie ni Numérotation) */}
                 <nav
                   aria-label="Navigation des piliers éditoriaux"
                   className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-full bg-[#141417] border border-white/[0.08]"
@@ -1250,9 +1092,8 @@
             </div>
           </header>
 
-          {/* CONTENEUR PRINCIPAL BENTO À ÉCHELLE MONUMENTALE */}
+          {/* CONTENEUR PRINCIPAL BENTO */}
           <main className="relative z-10 max-w-[1600px] mx-auto px-4 sm:px-8 pt-10 pb-24">
-            {/* Bandeau éditorial d'ouverture */}
             <section className="mb-10 pb-8 border-b border-white/[0.08] flex flex-col lg:flex-row lg:items-end justify-between gap-6">
               <div className="max-w-4xl">
                 <p className="font-mono text-xs sm:text-sm uppercase tracking-[0.22em] text-[#C85A32] mb-3">
@@ -1266,15 +1107,12 @@
                 <span className="px-3 py-1.5 rounded-lg bg-[#141417] border border-white/[0.08] text-[#D4AF37]">
                   DIPTYQUE CURATÉ : LA SONOTHÈQUE × LE PANTHÉON MANGA
                 </span>
-                <span>ÉDITION GRAND FORMAT • COULEURS ORIGINALES & PLATINE 3D</span>
+                <span>ÉDITION GRAND FORMAT • COULEURS ORIGINALES & LECTEUR OFFICIEL</span>
               </div>
             </section>
 
-            {/* GRILLE BENTO 12 COLONNES RÉPARTIE ENTRE LES 2 PILIERS */}
             <div className="grid grid-cols-12 gap-8 items-start">
-              {/* ============================================================
-                  PILIER 1 : LA SONOTHÈQUE (EXPÉRIENCE VINYLE GRAND FORMAT)
-              ============================================================ */}
+              {/* PILIER 1 : LA SONOTHÈQUE */}
               {(activeFilter === "ALL" || activeFilter === "MUSIC") && (
                 <section
                   className={`${
@@ -1283,13 +1121,13 @@
                 >
                   <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
                     <span className="font-mono text-xs sm:text-sm uppercase tracking-[0.16em] text-[#C85A32]">
-                      [LA SONOTHÈQUE // COLLECTION PERSONNELLE SANS CLASSEMENT]
+                      [LA SONOTHÈQUE // {SOUND_SPECTRUM_DATA.length} VINYLES ESSENTIELS SANS CLASSEMENT]
                     </span>
                     <button
                       onClick={() => setDrawerMode({ type: "MUSIC", initialAlbum: selectedAlbum })}
                       className="font-mono text-xs text-[#F4F1EA] bg-[#1E1E24] hover:bg-[#C85A32] px-4 py-2 rounded-full border border-white/[0.1] transition-colors"
                     >
-                      Explorer l'Intégrale des Vinyles ↗
+                      Explorer l'Intégrale des {SOUND_SPECTRUM_DATA.length} Vinyles ↗
                     </button>
                   </div>
 
@@ -1300,12 +1138,24 @@
                     « Des basses sismiques de Sevran aux guitares acoustiques de Kinshasa jusqu'aux confessions nocturnes de Londres Sud — chaque vinyle tourne à égalité d'exigence. »
                   </blockquote>
 
-                  {/* Sélecteur de fréquences musicales */}
+                  {/* Sélecteur de catégories */}
                   <div
                     role="tablist"
                     aria-label="Catégories musicales"
-                    className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 mb-8 p-2 rounded-2xl bg-[#0B0B0C] border border-white/[0.08]"
+                    className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-8 p-2 rounded-2xl bg-[#0B0B0C] border border-white/[0.08]"
                   >
+                    <button
+                      role="tab"
+                      aria-selected={activeMusicCat === "ALL"}
+                      onClick={() => handleMusicCategorySwitch("ALL")}
+                      className={`px-3.5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider transition-all ${
+                        activeMusicCat === "ALL"
+                          ? "bg-[#C85A32] text-[#F4F1EA] shadow-md"
+                          : "text-[#9E9EA9] hover:text-[#F4F1EA] hover:bg-[#1E1E24]/60"
+                      }`}
+                    >
+                      Tous ({SOUND_SPECTRUM_DATA.length})
+                    </button>
                     {MUSIC_CATEGORIES.map((cat) => (
                       <button
                         key={cat.key}
@@ -1323,7 +1173,7 @@
                     ))}
                   </div>
 
-                  {/* PLATINE VINYLE 3D GÉANTE AVEC ARCHITECTURE PLEINE LARGEUR */}
+                  {/* PLATINE VINYLE EN TÊTE */}
                   <div className="rounded-2xl bg-[#0B0B0C] border border-white/[0.1] p-6 sm:p-8 mb-8 relative overflow-hidden shadow-inner">
                     <div
                       aria-hidden="true"
@@ -1331,19 +1181,13 @@
                       style={{ backgroundColor: selectedAlbum.accentColor }}
                     />
 
-                    {/* EN-TÊTE DE LA PLATINE : Vinyle 3D + Métadonnées + Contrôles Audio */}
                     <div className="relative z-10 flex flex-col sm:flex-row items-center gap-6 sm:gap-10 pb-6 border-b border-white/[0.08]">
-                      {/* Pochette grand format + Disque 3D qui s'extrait et tourne */}
                       <div
-                        onClick={() => togglePlayAlbum(selectedAlbum)}
-                        title="Cliquer pour extraire le vinyle et lancer la lecture"
+                        onClick={() => setFocusedItem({ type: "music", data: selectedAlbum })}
+                        title="Cliquer pour ouvrir le dossier complet et écouter le morceau"
                         className="vinyl-stage cursor-pointer relative w-44 h-44 sm:w-52 sm:h-52 shrink-0 mr-10 sm:mr-14 select-none"
                       >
-                        <div
-                          className={`vinyl-disc-3d absolute inset-y-2 right-0 w-40 h-40 sm:w-48 sm:h-48 rounded-full border border-white/20 shadow-2xl flex items-center justify-center ${
-                            isSelectedPlaying ? "vinyl-disc-spinning" : "vinyl-disc-idle"
-                          }`}
-                        >
+                        <div className="vinyl-disc-3d absolute inset-y-2 right-0 w-40 h-40 sm:w-48 sm:h-48 rounded-full border border-white/20 shadow-2xl flex items-center justify-center vinyl-disc-idle">
                           <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full border border-white/10 flex items-center justify-center">
                             <div
                               className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-[#0B0B0C] flex flex-col items-center justify-center text-center px-1 shadow-inner"
@@ -1360,11 +1204,7 @@
                           </div>
                         </div>
 
-                        <div
-                          className={`vinyl-sleeve-3d relative z-10 w-full h-full rounded-2xl overflow-hidden border border-white/20 shadow-2xl bg-[#141417] ${
-                            isSelectedPlaying ? "vinyl-sleeve-active" : ""
-                          }`}
-                        >
+                        <div className="vinyl-sleeve-3d relative z-10 w-full h-full rounded-2xl overflow-hidden border border-white/20 shadow-2xl bg-[#141417]">
                           <img
                             src={selectedAlbum.coverImage}
                             onError={(e) => {
@@ -1374,13 +1214,12 @@
                             className="w-full h-full object-cover"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none" />
-                          <span className="absolute bottom-2.5 left-2.5 px-2.5 py-0.5 rounded-md bg-black/80 backdrop-blur-md font-mono text-[9px] uppercase tracking-wider text-[#F4F1EA] border border-white/15">
-                            {isSelectedPlaying ? "● EN ROTATION" : "ÉCOUTER"}
+                          <span className="absolute bottom-2.5 left-2.5 px-2.5 py-0.5 rounded-md bg-black/80 backdrop-blur-md font-mono text-[9px] uppercase tracking-wider text-[#D4AF37] border border-[#D4AF37]/30">
+                            OUVRIR POUR ÉCOUTER
                           </span>
                         </div>
                       </div>
 
-                      {/* Métadonnées principales & Actions */}
                       <div className="flex-1 min-w-0 text-left w-full">
                         <div className="flex flex-wrap items-center gap-2 mb-2.5">
                           <span className="font-mono text-xs uppercase tracking-widest px-3 py-1 rounded-full bg-[#1E1E24] text-[#D4AF37] border border-[#D4AF37]/30">
@@ -1405,66 +1244,19 @@
                           <span className="font-mono text-xs text-[#F4F1EA] font-semibold">
                             « {selectedAlbum.previewTrackTitle} »
                           </span>
-                          <span className="px-2 py-0.5 rounded bg-[#0B0B0C] text-[#D4AF37] font-mono text-[10px] uppercase tracking-wider border border-[#D4AF37]/30">
-                            {isSelectedPlaying ? "LECTURE EN COURS" : "EXTRAIT (30S)"}
-                          </span>
                         </div>
 
-                        <div className="flex flex-wrap items-center gap-3 mb-4">
-                          <button
-                            onClick={() => handlePlayTrack(selectedAlbum)}
-                            className={`px-4 py-2 rounded-full font-mono text-xs uppercase tracking-wider transition-all shadow-lg ${
-                              isSelectedPlaying
-                                ? "bg-[#C85A32] text-[#F4F1EA] shadow-[#C85A32]/30 animate-pulse"
-                                : "bg-[#F4F1EA] text-[#0B0B0C] hover:bg-[#D4AF37]"
-                            }`}
-                          >
-                            {isSelectedPlaying ? "⏸ METTRE EN PAUSE" : "▶ ÉCOUTER L'EXTRAIT"}
-                          </button>
-
+                        <div>
                           <button
                             onClick={() => setFocusedItem({ type: "music", data: selectedAlbum })}
-                            className="px-4 py-2 rounded-full bg-[#1E1E24] hover:bg-[#D4AF37] hover:text-[#0B0B0C] text-[#F4F1EA] border border-[#D4AF37]/40 font-mono text-xs uppercase tracking-wider transition-colors"
+                            className="px-5 py-2.5 rounded-full bg-[#D4AF37] hover:bg-[#F4F1EA] text-[#0B0B0C] font-mono text-xs uppercase tracking-wider transition-all font-semibold shadow-lg shadow-[#D4AF37]/20 flex items-center gap-2"
                           >
-                            Focus Éditorial • Dossier Complet ↗
+                            <span>ÉCOUTER SUR LE DOSSIER COMPLET ↗</span>
                           </button>
-
-                          <FrequencyVisualizer
-                            isPlaying={isSelectedPlaying}
-                            accentColor={selectedAlbum.accentColor}
-                          />
-                        </div>
-
-                        {/* Barre de progression interactive 30s sur la platine */}
-                        <div className="w-full bg-[#141417] rounded-xl p-3 border border-white/[0.08]">
-                          <div className="flex items-center justify-between font-mono text-[11px] text-[#9E9EA9] mb-1.5">
-                            <span className="text-[#F4F1EA] truncate">
-                              ♪ {selectedAlbum.previewTrackTitle} — <span className="text-[#D4AF37]">EXTRAIT (30S)</span>
-                            </span>
-                            <span className="tabular-nums text-[#D4AF37]">
-                              {formatAudioTime(selectedAlbumCurrentTime)} / {formatAudioTime(selectedAlbumDuration || 30)}
-                            </span>
-                          </div>
-                          <input
-                            type="range"
-                            min="0"
-                            max="100"
-                            step="0.5"
-                            aria-label="Barre de progression de l'extrait audio"
-                            value={selectedAlbumProgress}
-                            onChange={(e) => handleScrub(selectedAlbum, parseFloat(e.target.value))}
-                            className="w-full h-1.5 bg-[#0B0B0C] rounded-lg appearance-none cursor-pointer accent-[#C85A32]"
-                          />
-                          {audioError && currentTrack?.id === selectedAlbum.id && (
-                            <p className="mt-2 font-mono text-[11px] text-[#D4AF37]">
-                              ⚠ Préécoute temporairement indisponible
-                            </p>
-                          )}
                         </div>
                       </div>
                     </div>
 
-                    {/* CORPS ÉDITORIAL PLEINE LARGEUR (ZÉRO ESPACE VIDE ASYMÉTRIQUE) */}
                     <div className="relative z-10 pt-5 w-full">
                       <p className="text-sm sm:text-base leading-relaxed text-[#DCDAD2] border-l-2 border-[#C85A32]/70 pl-4 mb-4">
                         « {selectedAlbum.editorial} »
@@ -1491,11 +1283,10 @@
                     </div>
                   </div>
 
-                  {/* GRILLE DE CARTES UNIFIÉES PLEINE LARGEUR (SANS ESPACE VIDE SOUS LA POCHETTE) */}
+                  {/* GRILLE DES ALBUMS */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {filteredAlbums.map((album) => {
                       const isSelected = selectedAlbum.id === album.id;
-                      const isPlaying = playingAlbumId === album.id;
                       return (
                         <article
                           key={album.id}
@@ -1509,7 +1300,6 @@
                               : "bg-[#0B0B0C]/85 border-white/[0.08] hover:border-white/25"
                           }`}
                         >
-                          {/* En-tête de la carte : Pochette carrée + Métadonnées principales */}
                           <div className="flex items-center gap-4 pb-3.5 border-b border-white/[0.07]">
                             <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border border-white/15 shrink-0 bg-[#141417] shadow-md">
                               <img
@@ -1520,9 +1310,6 @@
                                 alt={`${album.artist} — ${album.title}`}
                                 className="w-full h-full object-cover"
                               />
-                              {isPlaying && (
-                                <span className="absolute top-2 right-2 w-3 h-3 rounded-full bg-[#C85A32] ring-4 ring-black/60 animate-ping" />
-                              )}
                             </div>
 
                             <div className="min-w-0 flex-1">
@@ -1541,12 +1328,11 @@
                                 {album.title}
                               </div>
                               <div className="mt-1 font-mono text-[10px] text-[#D4AF37] truncate">
-                                TITRE EN VEDETTE : « {album.previewTrackTitle} »
+                                EN VEDETTE : « {album.previewTrackTitle} »
                               </div>
                             </div>
                           </div>
 
-                          {/* Corps éditorial pleine largeur (100% de la carte) */}
                           <div className="w-full">
                             <p className="text-sm leading-relaxed text-[#DCDAD2] mb-3.5">
                               « {album.editorial} »
@@ -1570,19 +1356,9 @@
                             <span className="font-mono text-[10px] uppercase tracking-widest text-[#D4AF37]">
                               OUVRIR LE FOCUS ÉDITORIAL →
                             </span>
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handlePlayTrack(album);
-                              }}
-                              className={`px-3.5 py-1 rounded-full font-mono text-[10px] uppercase tracking-wider border transition-colors ${
-                                isPlaying
-                                  ? "bg-[#C85A32] border-[#C85A32] text-[#F4F1EA]"
-                                  : "bg-[#141417] border-white/15 text-[#D4AF37] hover:bg-[#C85A32] hover:text-[#F4F1EA]"
-                              }`}
-                            >
-                              {isPlaying ? "⏸ METTRE EN PAUSE" : "▶ ÉCOUTER L'EXTRAIT"}
-                            </button>
+                            <span className="px-3 py-1 rounded-full font-mono text-[10px] uppercase tracking-wider bg-[#141417] border border-white/15 text-[#D4AF37] hover:bg-[#C85A32] hover:text-[#F4F1EA]">
+                              ÉCOUTER (DEEZER)
+                            </span>
                           </div>
                         </article>
                       );
@@ -1591,9 +1367,7 @@
                 </section>
               )}
 
-              {/* ============================================================
-                  PILIER 2 : LE PANTHÉON MANGA (AFFICHES GÉANTES EN COULEUR)
-              ============================================================ */}
+              {/* PILIER 2 : LE PANTHÉON MANGA */}
               {(activeFilter === "ALL" || activeFilter === "MANGA") && (
                 <section
                   className={`${
@@ -1619,7 +1393,6 @@
                     « Du premier Kaméhaméha de l'enfance au serment de Thorfinn : "Je n'ai pas d'ennemis." La force véritable ne cherche jamais à écraser, mais à s'accomplir dans la paix. »
                   </blockquote>
 
-                  {/* QUATUOR D'AFFICHES MONUMENTALES EN PLEINE COULEUR + GIF HOLOGRAPHIQUE */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-8">
                     {featuredManga.map((manga) => (
                       <article
@@ -1655,7 +1428,6 @@
                     ))}
                   </div>
 
-                  {/* LES 6 AUTRES CHEFS-D'ŒUVRE EN CARTES AFFICHES COULEUR + GIF HOLOGRAPHIQUE */}
                   <div className="rounded-2xl bg-[#0B0B0C]/90 border border-white/[0.1] p-5">
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                       <span className="font-mono text-xs uppercase tracking-wider text-[#D4AF37]">
@@ -1706,9 +1478,7 @@
             </div>
           </main>
 
-          {/* ================================================================
-              TIROIR ÉDITORIAL LATÉRAL (SLIDE-OVER GRAND FORMAT EN FRANÇAIS)
-          ================================================================ */}
+          {/* TIROIR ÉDITORIAL LATÉRAL */}
           {drawerMode && (
             <div className="fixed inset-0 z-50 flex justify-end">
               <div
@@ -1748,81 +1518,62 @@
                         <h4 className="font-mono text-xs uppercase tracking-[0.18em] text-[#D4AF37] border-b border-white/[0.08] pb-2">
                           {category.fullTitle}
                         </h4>
-                        {SOUND_SPECTRUM_DATA.filter((r) => r.category === category.key).map((rec) => {
-                          const isPlaying = playingAlbumId === rec.id;
-                          return (
-                            <div
-                              key={rec.id}
-                              onClick={() => {
-                                setSelectedAlbum(rec);
-                                setDrawerMode(null);
-                                setFocusedItem({ type: "music", data: rec });
-                              }}
-                              className={`cursor-pointer p-5 rounded-2xl border flex flex-col gap-4 transition-colors ${
-                                drawerMode.initialAlbum?.id === rec.id
-                                  ? "bg-[#1E1E24] border-[#C85A32]"
-                                  : "bg-[#0B0B0C] border-white/[0.08] hover:border-white/25"
-                              }`}
-                            >
-                              <div className="flex items-center gap-4 pb-3 border-b border-white/[0.07]">
-                                <img
-                                  src={rec.coverImage}
-                                  onError={(e) => {
-                                    e.currentTarget.src = rec.fallbackCoverSvg;
-                                  }}
-                                  alt={rec.title}
-                                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover border border-white/15 shrink-0 shadow-lg"
-                                />
-                                <div className="flex-1 min-w-0">
-                                  <div className="font-mono text-xs text-[#9E9EA9] mb-1">
-                                    {rec.origin} // {rec.rpm}
-                                  </div>
-                                  <div className="font-serif text-2xl sm:text-3xl text-[#F4F1EA]">
-                                    {rec.artist} — <em className="text-[#D4AF37]">{rec.title}</em>
-                                  </div>
-                                  <div className="font-mono text-[11px] text-[#C85A32] mt-1">
-                                    {rec.productionNotes}
-                                  </div>
+                        {SOUND_SPECTRUM_DATA.filter((r) => r.category === category.key).map((rec) => (
+                          <div
+                            key={rec.id}
+                            onClick={() => {
+                              setSelectedAlbum(rec);
+                              setDrawerMode(null);
+                              setFocusedItem({ type: "music", data: rec });
+                            }}
+                            className="cursor-pointer p-5 rounded-2xl border flex flex-col gap-4 transition-colors bg-[#0B0B0C] border-white/[0.08] hover:border-white/25"
+                          >
+                            <div className="flex items-center gap-4 pb-3 border-b border-white/[0.07]">
+                              <img
+                                src={rec.coverImage}
+                                onError={(e) => {
+                                  e.currentTarget.src = rec.fallbackCoverSvg;
+                                }}
+                                alt={rec.title}
+                                className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover border border-white/15 shrink-0 shadow-lg"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <div className="font-mono text-xs text-[#9E9EA9] mb-1">
+                                  {rec.origin} // {rec.rpm}
                                 </div>
-                              </div>
-
-                              <p className="text-sm leading-relaxed text-[#DCDAD2]">
-                                « {rec.editorial} »
-                              </p>
-
-                              <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-white/[0.06]">
-                                <div className="flex flex-wrap items-center gap-1.5">
-                                  <span className="font-mono text-[10px] uppercase tracking-widest text-[#D4AF37]">
-                                    TITRES CLÉS :
-                                  </span>
-                                  {rec.keyTracks.map((track) => (
-                                    <span
-                                      key={track}
-                                      className="px-2 py-0.5 rounded bg-[#141417] border border-white/[0.08] font-mono text-[10px] text-[#F4F1EA]"
-                                    >
-                                      {track}
-                                    </span>
-                                  ))}
+                                <div className="font-serif text-2xl sm:text-3xl text-[#F4F1EA]">
+                                  {rec.artist} — <em className="text-[#D4AF37]">{rec.title}</em>
                                 </div>
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    handlePlayTrack(rec);
-                                  }}
-                                  className={`px-4 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider border transition-colors ${
-                                    isPlaying
-                                      ? "bg-[#C85A32] border-[#C85A32] text-[#F4F1EA]"
-                                      : "bg-[#141417] border-white/15 text-[#D4AF37] hover:bg-[#C85A32] hover:text-[#F4F1EA]"
-                                  }`}
-                                >
-                                  {isPlaying
-                                    ? `⏸ METTRE EN PAUSE (« ${rec.previewTrackTitle} »)`
-                                    : `▶ ÉCOUTER L'EXTRAIT : « ${rec.previewTrackTitle} »`}
-                                </button>
+                                <div className="font-mono text-[11px] text-[#C85A32] mt-1">
+                                  {rec.productionNotes}
+                                </div>
                               </div>
                             </div>
-                          );
-                        })}
+
+                            <p className="text-sm leading-relaxed text-[#DCDAD2]">
+                              « {rec.editorial} »
+                            </p>
+
+                            <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-white/[0.06]">
+                              <div className="flex flex-wrap items-center gap-1.5">
+                                <span className="font-mono text-[10px] uppercase tracking-widest text-[#D4AF37]">
+                                  TITRES CLÉS :
+                                </span>
+                                {rec.keyTracks.map((track) => (
+                                  <span
+                                    key={track}
+                                    className="px-2 py-0.5 rounded bg-[#141417] border border-white/[0.08] font-mono text-[10px] text-[#F4F1EA]"
+                                  >
+                                    {track}
+                                  </span>
+                                ))}
+                              </div>
+                              <span className="px-4 py-1.5 rounded-full font-mono text-xs uppercase tracking-wider bg-[#141417] border border-white/15 text-[#D4AF37]">
+                                OUVRIR LE DOSSIER & ÉCOUTER →
+                              </span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     ))}
                   </div>
@@ -1837,11 +1588,7 @@
                           setDrawerMode(null);
                           setFocusedItem({ type: "manga", data: work });
                         }}
-                        className={`cursor-pointer p-5 rounded-2xl border flex flex-col sm:flex-row gap-6 items-start transition-colors ${
-                          drawerMode.initialManga?.id === work.id
-                            ? "bg-[#1E1E24] border-[#D4AF37]"
-                            : "bg-[#0B0B0C] border-white/[0.08] hover:border-[#D4AF37]/50"
-                        }`}
+                        className="cursor-pointer p-5 rounded-2xl border flex flex-col sm:flex-row gap-6 items-start transition-colors bg-[#0B0B0C] border-white/[0.08] hover:border-[#D4AF37]/50"
                       >
                         <div className="w-full sm:w-56 shrink-0 rounded-xl overflow-hidden border border-white/15 shadow-xl">
                           <HolographicMangaPoster
@@ -1885,7 +1632,6 @@
               onClick={() => setFocusedItem(null)}
               className="fixed inset-0 z-50 bg-[#0B0B0C]/35 backdrop-blur-[2px] transition-all duration-500 ease-out flex items-start sm:items-center justify-center p-3 sm:p-8 overflow-y-auto"
             >
-              {/* Fond d'immersion plein écran haute visibilité basé sur l'affiche originale */}
               <img
                 src={focusedItem.data.artworkUrl || focusedItem.data.coverImage}
                 onError={(e) => {
@@ -1900,7 +1646,6 @@
                 }}
                 className="fixed inset-0 bg-cover bg-center filter brightness-[0.45] contrast-[1.05] blur-[2px] scale-105 pointer-events-none transition-all duration-700 w-full h-full object-cover"
               />
-              {/* Vignette radiale légère laissant apparaître clairement l'œuvre en arrière-plan */}
               <div
                 aria-hidden="true"
                 style={{
@@ -1955,18 +1700,9 @@
                 {focusedItem.type === "music" && (
                   <div className="p-6 sm:p-10 space-y-8 max-h-[82vh] overflow-y-auto">
                     <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-12 pb-6 border-b border-white/[0.08]">
-                      {/* Vinyle 3D géant en rotation */}
-                      <div
-                        onClick={() => togglePlayAlbum(focusedItem.data)}
-                        className="vinyl-stage cursor-pointer relative w-52 h-52 sm:w-64 sm:h-64 shrink-0 mr-12 sm:mr-16 select-none"
-                      >
-                        <div
-                          className={`vinyl-disc-3d absolute inset-y-2 right-0 w-48 h-48 sm:w-60 sm:h-60 rounded-full border border-white/20 shadow-2xl flex items-center justify-center ${
-                            playingAlbumId === focusedItem.data.id
-                              ? "vinyl-disc-spinning"
-                              : "vinyl-disc-idle"
-                          }`}
-                        >
+                      {/* Vinyle 3D géant */}
+                      <div className="vinyl-stage relative w-52 h-52 sm:w-64 sm:h-64 shrink-0 mr-12 sm:mr-16 select-none">
+                        <div className="vinyl-disc-3d absolute inset-y-2 right-0 w-48 h-48 sm:w-60 sm:h-60 rounded-full border border-white/20 shadow-2xl flex items-center justify-center vinyl-disc-idle">
                           <div
                             className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-[#0B0B0C] flex flex-col items-center justify-center text-center px-1"
                             style={{ backgroundColor: focusedItem.data.accentColor }}
@@ -2013,70 +1749,34 @@
                           </p>
                         </div>
 
-                        {/* BARRE DE LECTURE DÉDIÉE DANS LE DOSSIER ÉTENDU (PRÉÉCOUTE 30S) */}
-                        <div className="p-4 sm:p-5 rounded-2xl bg-[#0B0B0C] border border-[#D4AF37]/40 shadow-xl space-y-4">
-                          <div className="flex flex-wrap items-center justify-between gap-2">
-                            <div className="flex items-center gap-2">
-                              <span className="px-2.5 py-1 rounded-md bg-[#C85A32]/20 border border-[#C85A32] font-mono text-[10px] uppercase tracking-widest text-[#F4F1EA]">
-                                TITRE EN VEDETTE
+                        {/* LECTEUR OFFICIEL DEEZER DANS LE DOSSIER ÉTENDU */}
+                        {focusedItem.data.deezerTrackId ? (
+                          <div className="w-full mt-4 rounded-2xl overflow-hidden border border-[#D4AF37]/40 bg-black/70 shadow-2xl p-2.5 backdrop-blur-md">
+                            <div className="flex items-center justify-between px-3 py-1.5 border-b border-white/10 mb-2">
+                              <span className="text-[11px] font-mono tracking-wider text-[#D4AF37] flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
+                                ÉCOUTE OFFICIELLE DEEZER • EXTRAIT DISPONIBLE
                               </span>
-                              <span className="font-serif italic text-xl text-[#D4AF37]">
-                                « {focusedItem.data.previewTrackTitle} »
-                              </span>
-                            </div>
-                            <span className="px-2.5 py-1 rounded-md bg-[#141417] border border-white/10 font-mono text-[10px] uppercase tracking-wider text-[#D4AF37]">
-                              {playingAlbumId === focusedItem.data.id ? "LECTURE EN COURS" : "EXTRAIT (30S)"}
-                            </span>
-                          </div>
-
-                          <div className="flex flex-wrap items-center gap-4">
-                            <button
-                              onClick={() => handlePlayTrack(focusedItem.data)}
-                              className={`px-6 py-3 rounded-full font-mono text-xs uppercase tracking-wider transition-all shadow-lg ${
-                                playingAlbumId === focusedItem.data.id
-                                  ? "bg-[#C85A32] text-[#F4F1EA] animate-pulse"
-                                  : "bg-[#F4F1EA] text-[#0B0B0C] hover:bg-[#D4AF37]"
-                              }`}
-                            >
-                              {playingAlbumId === focusedItem.data.id
-                                ? "⏸ METTRE EN PAUSE"
-                                : "▶ ÉCOUTER L'EXTRAIT"}
-                            </button>
-
-                            <FrequencyVisualizer
-                              isPlaying={playingAlbumId === focusedItem.data.id}
-                              accentColor={focusedItem.data.accentColor}
-                            />
-                          </div>
-
-                          {/* Barre de progression interactive 0:00 / 0:30 */}
-                          <div className="space-y-1.5 pt-1">
-                            <input
-                              type="range"
-                              min="0"
-                              max="100"
-                              step="0.5"
-                              aria-label="Barre de progression de l'extrait 30 secondes"
-                              value={currentTrack?.id === focusedItem.data.id ? progress : 0}
-                              onChange={(e) => handleScrub(focusedItem.data, parseFloat(e.target.value))}
-                              className="w-full h-2 bg-[#141417] rounded-lg appearance-none cursor-pointer accent-[#C85A32]"
-                            />
-                            <div className="flex items-center justify-between font-mono text-xs text-[#9E9EA9]">
-                              <span>
-                                {focusedItem.data.artist} — {focusedItem.data.previewTrackTitle}
-                              </span>
-                              <span className="tabular-nums text-[#D4AF37]">
-                                {formatAudioTime(currentTrack?.id === focusedItem.data.id ? currentTime : 0)} /{" "}
-                                {formatAudioTime(currentTrack?.id === focusedItem.data.id ? duration || 30 : 30)}
+                              <span className="text-[10px] font-mono text-white/50">
+                                TITRE : « {focusedItem.data.previewTrackTitle} »
                               </span>
                             </div>
-                            {audioError && currentTrack?.id === focusedItem.data.id && (
-                              <p className="font-mono text-xs text-[#D4AF37] pt-1">
-                                ⚠ Préécoute temporairement indisponible
-                              </p>
-                            )}
+                            <iframe
+                              title={`Deezer Player - ${focusedItem.data.title}`}
+                              src={`https://widget.deezer.com/widget/dark/track/${focusedItem.data.deezerTrackId}?tracklist=false`}
+                              width="100%"
+                              height="152"
+                              frameBorder="0"
+                              allowtransparency="true"
+                              allow="encrypted-media; clipboard-write"
+                              className="rounded-xl w-full"
+                            />
                           </div>
-                        </div>
+                        ) : (
+                          <div className="p-4 rounded-xl bg-[#0B0B0C] border border-[#D4AF37]/30 text-center font-mono text-xs text-[#D4AF37]">
+                            Lecteur Deezer en cours de synchronisation
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -2110,10 +1810,10 @@
                   </div>
                 )}
 
-                {/* Contenu du Focus Manga (Focus Exclusif sur le GIF Cinématique à Échelle Héroïque) */}
+                {/* Contenu du Focus Manga */}
                 {focusedItem.type === "manga" && (
                   <div className="p-6 sm:p-10 space-y-6 max-h-[82vh] overflow-y-auto">
-                    {/* Sélecteur de Scènes pour Yu-Gi-Oh! (Exception Double Scène) */}
+                    {/* Sélecteur de Scènes pour Yu-Gi-Oh! */}
                     {focusedItem.data.bonusSceneGifUrl && (
                       <div className="flex flex-wrap items-center justify-between gap-2 p-2 rounded-2xl bg-[#0B0B0C]/90 border border-[#D4AF37]/30">
                         <span className="font-mono text-[10px] uppercase tracking-widest text-[#D4AF37] px-2">
@@ -2157,7 +1857,6 @@
                       </div>
                     )}
 
-                    {/* Hero Media : GIF Cinématique Dédié (Zéro doublon statique) */}
                     {focusedItem.data.bonusSceneGifUrl && activeBonusSceneTab === 0 ? (
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-2">
                         <div className="relative w-full rounded-2xl overflow-hidden border border-[#D4AF37]/30 bg-black/60 shadow-2xl flex items-center justify-center min-h-[240px] max-h-[380px]">
@@ -2226,13 +1925,12 @@
                         <div className="absolute top-3 right-3 flex items-center gap-2">
                           <span className="px-2.5 py-1 rounded-full text-[10px] font-mono tracking-wider bg-black/75 text-[#D4AF37] border border-[#D4AF37]/40 backdrop-blur-md shadow-lg flex items-center gap-1.5">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-ping" />
-                            SCÈNE ANIMÉE EN BOUCLE • EN ANIMATION // BOUCLE CINÉMATIQUE
+                            SCÈNE ANIMÉE EN BOUCLE
                           </span>
                         </div>
                       </div>
                     )}
 
-                    {/* En-tête Typographique Aéré : Badge Kanji, Auteur & Sous-titre de Scène */}
                     <div className="space-y-5">
                       <div className="flex flex-col gap-3 border-b border-white/[0.08] pb-5">
                         <div className="flex flex-wrap items-center gap-2.5">
